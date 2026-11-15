@@ -36,7 +36,7 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin:0
 .login{min-height:100vh;display:grid;place-items:center;padding:20px}
 .login .box{width:100%;max-width:360px;background:rgba(255,255,255,.92);padding:26px;border-radius:22px;box-shadow:var(--sh3);border:1px solid rgba(255,255,255,.8)}
 .login h1{margin:0 0 4px;font-size:1.4rem}.login p{margin:0 0 16px;color:var(--muted)}
-.login .row{margin-bottom:12px}.login .msg{color:var(--red);font-weight:600;margin:0 0 12px;min-height:1.2em}
+.login .row{margin-bottom:12px}.login .msg{color:var(--red);font-weight:600;margin:0 0 12px;min-height:1.2em}.login .msg.ok{color:#15803d}
 .demo-note{background:var(--amber-soft);color:var(--amber);padding:8px 12px;border-radius:10px;font-size:.85rem;margin-bottom:14px}
 
 /* khung chung */
@@ -301,9 +301,10 @@ const MSG = {
 // Mọi lệnh sau đăng nhập đi qua đây: token sai/hết hạn thì tự đăng xuất; lỗi thì báo và trả null
 // Màn chờ Origo: bật khi đang gọi máy chủ, khóa chuột và bàn phím. Trong lúc một lệnh đang chạy, lệnh khác bị bỏ qua (chống bấm đúp).
 let inflight = false, busyTimer = 0;
-function busyOn() {
+function busyOn(label) {
   clearTimeout(busyTimer);
   inflight = true;
+  $('#busy small').textContent = label || 'Đang xử lý…';
   if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   const b = $('#busy');
   try { if (b.showPopover) { if (b.matches(':popover-open')) b.hidePopover(); b.showPopover(); } else b.classList.add('on'); } catch (e) { b.classList.add('on'); }
@@ -342,22 +343,28 @@ function toast(text, kind) {
 }
 
 /* ---------------- đăng nhập / đăng xuất ---------------- */
-function showLogin(msg) {
+function showLogin(msg, kind) {
   $('#app').hidden = true;
   $('#login').hidden = false;
   $('#lg-msg').textContent = msg || '';
+  $('#lg-msg').classList.toggle('ok', kind === 'ok');
   $('#demo-note').hidden = !DEMO;
   $('#lg-user').value = localStorage.getItem('origo_user') || '';
   (($('#lg-user').value) ? $('#lg-pin') : $('#lg-user')).focus();
 }
 async function logout(msg) {
+  if (inflight && !msg) return; // đang xử lý lệnh khác: chờ xong mới cho đăng xuất
   const had = session;
+  stopPoll();
+  if (had && !msg) { // chủ động đăng xuất: hiện màn chờ "Đang đăng xuất…" trong lúc thu hồi token ở máy chủ
+    busyOn('Đang đăng xuất…');
+    try { await rawApi('logout'); } finally { busyOff(); }
+  }
   session = null;
   localStorage.removeItem(SKEY);
-  stopPoll();
-  if (had && !msg) { session = had; await rawApi('logout'); session = null; } // chủ động đăng xuất: thu hồi token ở máy chủ
   S.loaded = false;
-  showLogin(msg);
+  document.querySelectorAll('dialog[open]').forEach((d) => d.close());
+  showLogin(msg || (had ? 'Đã đăng xuất.' : ''), msg ? 'err' : 'ok');
 }
 $('#login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -367,7 +374,8 @@ $('#login-form').addEventListener('submit', async (e) => {
   if (inflight) return;
   btn.disabled = true;
   $('#lg-msg').textContent = '';
-  busyOn();
+  $('#lg-msg').classList.remove('ok');
+  busyOn('Đang đăng nhập…');
   let r;
   try { r = await rawApi('login', { user, pin }); } finally { busyOff(); btn.disabled = false; }
   if (r && r.ok) {
