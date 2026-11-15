@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#100c40">
+<title>Origo – Nhân viên</title>
+<link rel="icon" href="favicon.png">
+<style>
+:root{--navy:#100c40;--blue:#6a1ff0;--blue-soft:#efe8ff;--purple-dark:#4b12b8;--orange:#f26d0a;--green:#16a34a;--green-soft:#dcfce7;--amber:#b45309;--amber-soft:#fef3c7;--red:#dc2626;--red-soft:#fee2e2;--ink:#17143a;--muted:#6b6890;--bg:#f4f2fb;--card:#fff;--line:#e8e4f6;--r:14px;
+--sh1:0 1px 2px rgba(16,12,64,.05),0 4px 14px rgba(16,12,64,.07);--sh2:0 2px 4px rgba(16,12,64,.06),0 14px 34px rgba(16,12,64,.14);--sh3:0 4px 8px rgba(16,12,64,.08),0 24px 60px rgba(16,12,64,.28)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:radial-gradient(900px 480px at 8% -8%,#e8e1ff 0,transparent 60%),radial-gradient(800px 460px at 100% 0,#ffeedd 0,transparent 55%),var(--bg);background-attachment:fixed;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.btn{border:0;border-radius:10px;padding:8px 13px;font-weight:600;cursor:pointer;background:linear-gradient(#f2f0fb,#e6e3f6);color:var(--ink);white-space:nowrap;box-shadow:0 1px 2px rgba(16,12,64,.12),inset 0 1px 0 rgba(255,255,255,.7);transition:transform .12s,box-shadow .12s,filter .12s}
+.btn:hover{filter:brightness(.98);box-shadow:0 3px 10px rgba(16,12,64,.16),inset 0 1px 0 rgba(255,255,255,.7)}.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default;box-shadow:none;transform:none}
+.btn.pri{background:linear-gradient(#8a4bff,#5b17d6);color:#fff;box-shadow:0 2px 8px rgba(106,31,240,.38),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn.pri:disabled{background:#8c97b8;opacity:1;box-shadow:none}
+.btn.ok{background:linear-gradient(#22b45a,#15913f);color:#fff;box-shadow:0 2px 8px rgba(22,163,74,.32),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn.bad{background:linear-gradient(#ea4a4a,#cf2222);color:#fff}
+.btn.line{background:#fff;border:1.5px solid var(--line);box-shadow:none}.btn.line:hover{box-shadow:var(--sh1)}.btn.line.bad{color:var(--red);border-color:#f5b4b4}
+.btn.lg{padding:14px 18px;font-size:1.08rem;border-radius:14px;width:100%}
+.btn.sm{padding:4px 9px;font-size:.82rem;border-radius:8px}
+input,select,textarea{width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:#fff;box-shadow:inset 0 1px 2px rgba(16,12,64,.04)}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(106,31,240,.55);outline-offset:-1px;border-color:var(--blue)}
+label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin:0 0 3px}
+.meta{font-size:.82rem;color:var(--muted)}
+.chip{display:inline-block;border-radius:999px;padding:1px 8px;font-size:.74rem;font-weight:700;background:#ece9fb;color:var(--muted)}
+.chip.ok{background:var(--green-soft);color:#166534}.chip.warn{background:var(--amber-soft);color:var(--amber)}.chip.bad{background:var(--red-soft);color:#991b1b}.chip.blue{background:var(--blue-soft);color:var(--purple-dark)}
+
+/* đăng nhập */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login .box{width:100%;max-width:360px;background:rgba(255,255,255,.92);padding:26px;border-radius:22px;box-shadow:var(--sh3);border:1px solid rgba(255,255,255,.8)}
+.login h1{margin:0 0 4px;font-size:1.4rem}.login p{margin:0 0 16px;color:var(--muted)}
+.login .row{margin-bottom:12px}.login .msg{color:var(--red);font-weight:600;margin:0 0 12px;min-height:1.2em}
+.demo-note{background:var(--amber-soft);color:var(--amber);padding:8px 12px;border-radius:10px;font-size:.85rem;margin-bottom:14px}
+
+/* khung chung */
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#2a0f7a,#6a1ff0);color:#fff;display:flex;align-items:center;gap:10px;padding:9px 14px;padding-top:max(9px,env(safe-area-inset-top));box-shadow:0 6px 22px rgba(16,12,64,.28)}
+.top .brand{font-size:1.05rem;letter-spacing:.02em}
+.top .who{font-size:.8rem;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.top .grow{flex:1}
+.top .btn{background:rgba(255,255,255,.14);color:#fff;box-shadow:none}
+.top .ib{display:inline-flex;align-items:center;gap:6px}.top .ib svg{width:16px;height:16px;flex:none}
+.viewsw{display:flex;background:rgba(255,255,255,.16);border-radius:999px;padding:3px;gap:2px;flex:none}
+.viewsw button{border:0;background:transparent;color:#fff;font-weight:700;font-size:.8rem;padding:5px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.viewsw button.on{background:#fff;color:var(--purple-dark);box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.demo-bar{background:var(--amber-soft);color:var(--amber);text-align:center;font-size:.78rem;padding:2px}
+
+/* vận hành */
+.ops{display:grid;grid-template-columns:310px 1fr;gap:14px;padding:14px;align-items:start}
+.zone{border-radius:16px;padding:9px;margin-bottom:12px;border:1px solid rgba(255,255,255,.7);box-shadow:var(--sh1)}
+.zone.z-new{background:linear-gradient(180deg,#fff8e1,#ffeec2)}.zone.z-free{background:linear-gradient(180deg,#f4eeff,#e4d8ff)}.zone.z-cancel{background:linear-gradient(180deg,#ffeeee,#fbd9d9)}
+.zone h3{margin:1px 3px 7px;font-size:.84rem;display:flex;align-items:center;gap:7px}
+.zone h3 small{font-weight:600;color:var(--muted);font-size:.72rem;margin-left:auto}
+.zone .zs{padding:5px 9px;font-size:.8rem;border-radius:9px;margin:0 0 7px;background:rgba(255,255,255,.85)}
+.zone .list{display:flex;flex-direction:column;gap:5px;min-height:38px}
+.zone .empty{background:rgba(255,255,255,.55);border-color:rgba(16,12,64,.12)}
+.zone.over{outline:3px solid rgba(106,31,240,.7);outline-offset:-3px}
+.empty{color:var(--muted);font-size:.8rem;text-align:center;padding:9px 6px;border:1.5px dashed var(--line);border-radius:10px}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:10px}
+.bar .fld{min-width:150px}
+.daynav{display:flex;gap:6px;align-items:center}.daynav input{width:auto}.trips-h{margin:0 0 9px;font-size:1.02rem}
+.trips{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.trip{background:linear-gradient(180deg,#fff,#fbfaff);border-radius:16px;padding:10px;border:1px solid rgba(16,12,64,.06);box-shadow:var(--sh1);display:flex;flex-direction:column;gap:7px;transition:box-shadow .15s}
+.trip:hover{box-shadow:var(--sh2)}
+.trip.over{outline:3px solid rgba(106,31,240,.7);outline-offset:-3px;background:var(--blue-soft)}
+.trip header{display:flex;align-items:center;gap:7px;cursor:pointer}.trip header b{font-size:1rem}
+.trip .meta{font-size:.78rem}
+.trip .list{display:flex;flex-direction:column;gap:5px;min-height:46px}
+.cap{margin-left:auto;font-weight:800;font-size:.85rem;border-radius:999px;padding:1px 9px;background:#ece4ff;color:var(--purple-dark)}
+.cap.full{background:var(--amber-soft);color:var(--amber)}.cap.over{background:var(--red-soft);color:var(--red)}
+
+/* dòng khách */
+.tk{background:#fff;border:1px solid rgba(16,12,64,.07);border-radius:10px;padding:5px 9px;cursor:pointer;display:flex;flex-direction:column;gap:0;box-shadow:0 1px 2px rgba(16,12,64,.06),0 3px 9px rgba(16,12,64,.05);transition:transform .12s,box-shadow .12s}
+.tk:hover{transform:translateY(-1px);box-shadow:0 2px 4px rgba(16,12,64,.08),0 8px 18px rgba(16,12,64,.12)}
+.tk[draggable=true]{cursor:grab}.tk.dragging{opacity:.4}
+.tk .l1{display:flex;align-items:center;gap:6px}.tk .l1 b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.88rem}
+.tk .l2{font-size:.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk.picked{background:linear-gradient(#f3fdf6,#e8faee);border-color:#bde8c9}
+.tk.cancel{background:#f6f6f7;color:#71717a}.tk.cancel b{text-decoration:line-through}
+.pay{flex:none;width:22px;height:22px;display:block}.pay svg{width:100%;height:100%;display:block}
+.pp{flex:none;font-size:.7rem;font-weight:700;background:#ece9fb;border-radius:999px;padding:0 7px}
+
+/* popup */
+dialog{border:0;border-radius:20px;padding:0;max-width:94vw;width:640px;max-height:92vh;color:var(--ink);background:#fff;box-shadow:var(--sh3)}
+dialog::backdrop{background:rgba(16,12,64,.45);backdrop-filter:blur(3px)}
+dialog .dh{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(255,255,255,.96);z-index:1}
+dialog .dh h2{margin:0;font-size:1.08rem;flex:1;min-width:0}
+dialog .dh.hero{background:linear-gradient(135deg,#2a0f7a,#6a1ff0);color:#fff;border:0}.dh.hero h2{color:#fff}.dh.hero small{display:block;opacity:.8;font-size:.76rem;font-weight:500;margin-top:1px}.dh.hero .btn{background:rgba(255,255,255,.18);color:#fff;box-shadow:none}.dh.hero .chip{background:rgba(255,255,255,.92);color:var(--purple-dark)}
+dialog .db{padding:14px 18px;overflow:auto}
+dialog .df{display:flex;flex-wrap:wrap;gap:8px;padding:11px 18px;border-top:1px solid var(--line);background:linear-gradient(#fbfaff,#f4f2fc);position:sticky;bottom:0;align-items:center}
+.hint-dirty{color:var(--amber);font-weight:700;font-size:.8rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g2 .full{grid-column:1/-1}
+.sec{margin:14px 0 7px;font-size:.74rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:3px 10px;font-size:.88rem}.kv dt{color:var(--muted)}.kv dd{margin:0}
+.payrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.flash{border-radius:10px;padding:8px 12px;font-weight:700;margin:0 0 10px}.flash.ok{background:var(--green-soft);color:#166534}.flash:empty{display:none}
+dialog.sheet{width:520px}
+@media (max-width:640px){dialog.sheet{margin:auto auto 0;border-radius:22px 22px 0 0;max-width:100%;width:100%}.g2{grid-template-columns:1fr}}
+
+/* vé QR */
+.ticket{background:linear-gradient(#fff,#f7f3ff);border:1px solid rgba(106,31,240,.35);border-radius:18px;padding:0;overflow:hidden;max-width:360px;margin:0 auto;box-shadow:var(--sh2)}
+.ticket .th{background:linear-gradient(135deg,#2a0f7a,#6a1ff0);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px}.ticket .th .logo{background:#fff;border-radius:12px;padding:5px 10px;display:flex;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.18)}.ticket .th img{height:34px;display:block}.ticket .th b{font-size:1.05rem}
+.ticket .tb{padding:14px 16px;text-align:center}
+.ticket h3{margin:0;font-size:1.25rem}.ticket .route{color:var(--muted);margin:2px 0 10px;font-size:.9rem}
+.ticket .info{text-align:left;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.92rem;margin:10px 0}.ticket .info dt{color:var(--muted)}.ticket .info dd{margin:0;font-weight:600}
+.ticket .qr{width:210px;height:210px;margin:6px auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:10px}.ticket .qr svg{width:100%;height:100%;display:block}
+.ticket .code{font-size:1.35rem;font-weight:800;letter-spacing:.08em;margin-top:4px;color:var(--purple-dark)}
+.ticket .foot{font-size:.78rem;color:var(--muted);margin-top:8px}
+
+/* sân bay (điện thoại) */
+.air{padding:12px;max-width:640px;margin:0 auto}
+.air .day{font-weight:800;margin:14px 2px 6px;color:var(--navy)}
+.air details{background:var(--card);border-radius:var(--r);margin-bottom:10px;border:1px solid rgba(16,12,64,.06);box-shadow:var(--sh1)}
+.air summary{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;list-style:none}
+.air summary::-webkit-details-marker{display:none}.air summary b{font-size:1.02rem}.air summary .meta{font-size:.8rem;color:var(--muted)}
+.air .list{padding:0 10px 10px;display:flex;flex-direction:column;gap:7px}
+.air .tk{padding:10px 12px}.air .tk .l1 b{font-size:1rem}.air .tk .l2{font-size:.76rem}.air .pay{width:26px;height:26px}.air .pp{font-size:.76rem}
+.bigpay{position:relative;border-radius:14px;padding:14px 46px 14px 14px;text-align:center;font-weight:800;font-size:1.15rem;margin:8px 0}
+.bigpay.yes{background:var(--green-soft);color:#166534}.bigpay.no{background:var(--red-soft);color:#991b1b}
+.bigpay small{display:block;font-weight:600;font-size:.82rem;margin-top:2px;opacity:.85}
+.stack{display:flex;flex-direction:column;gap:9px}
+.bigpay .x,.stat .x{position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.8);color:inherit;font-weight:800;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.15)}.bigpay .x:hover{background:#fff}.bigpay .x:disabled{opacity:.4;cursor:default}
+.bigpay.no{padding-right:14px}
+.payctl{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:0 0 10px;background:#fff;box-shadow:var(--sh1)}
+.payctl .row{display:flex;align-items:center;gap:10px}
+.payctl .st{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.95rem;padding:6px 13px;border-radius:999px}
+.payctl .st::before{content:'';width:9px;height:9px;border-radius:50%}
+.payctl.no .st{background:#fdeceb;color:#991b1b}.payctl.no .st::before{background:#dc2626}
+.payctl.yes .st{background:#e6f6ea;color:#166534}.payctl.yes .st::before{background:#16a34a}
+.payctl .go{margin-left:auto}
+.payctl .x{margin-left:auto;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:800;color:var(--muted);cursor:pointer;display:grid;place-items:center;padding:0}
+.payctl .x:hover{background:#f5f2ff;color:var(--ink)}.payctl .x:disabled{opacity:.4;cursor:default}
+.payctl .amt{font-size:.8rem;color:var(--muted);margin-top:6px}
+.notebox{border:1px solid var(--line);border-left:4px solid #d97706;border-radius:12px;padding:10px 12px;background:#fff;font-size:.9rem}
+.notebox b{display:block}.notebox .meta{margin:2px 0 8px}
+.cx{flex:none;width:22px;height:22px;display:block}.cx svg{width:100%;height:100%;display:block}
+.bigpay .act{margin-top:8px}
+.fcard{background:linear-gradient(#fbf9ff,#f6f2ff);border:1px solid #e8e0fb;border-radius:14px;padding:11px 14px 13px;margin-bottom:11px}
+.fcard h4{margin:0 0 9px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--purple-dark);display:flex;align-items:center;gap:7px}.fcard h4::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.fcard input,.fcard select,.fcard textarea{background:#fff;border-color:#e4dbf8}
+.tk.released{background:#fff8ef;border-style:dashed;border-color:#f0c88f}.tk.released b{color:#9a5b12}
+.scanbox{position:relative;overflow:hidden;border-radius:16px;background:#0e0b2b;aspect-ratio:1/1;margin-bottom:10px}.scanbox video{width:100%;height:100%;object-fit:cover;display:block}
+.scanbox .frame{position:absolute;inset:16%;border:3px solid rgba(255,255,255,.95);border-radius:20px;box-shadow:0 0 0 999px rgba(16,12,64,.42);pointer-events:none}
+.reasons{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
+
+#toasts{position:fixed;inset:auto;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top, 0px) + 58px);margin:0;padding:0;border:0;background:transparent;overflow:visible;z-index:100;display:flex;flex-direction:column;gap:8px;width:min(92vw,480px);pointer-events:none}
+#toasts:not(:popover-open){display:none}
+.toast{background:var(--navy);color:#fff;padding:11px 15px;border-radius:12px;font-weight:600;box-shadow:var(--sh3);animation:in .2s;pointer-events:auto;cursor:pointer}
+.toast.err{background:var(--red)}.toast.warn{background:var(--amber)}.toast.ok{background:#15803d}
+@keyframes in{from{opacity:0;transform:translateY(-8px)}}
+/* màn chờ: khóa mọi thao tác trong lúc máy chủ xử lý, tránh bấm đúp. Nền chặn bấm ngay, hình hiện sau ~0,1 giây để lần xử lý nhanh không nháy */
+#busy{position:fixed;inset:0;margin:0;padding:0;border:0;width:100vw;height:100vh;max-width:none;max-height:none;overflow:hidden;background:rgba(244,242,251,.5);backdrop-filter:blur(3px);display:grid;place-items:center;cursor:progress;color:var(--ink);animation:bfade .18s .12s both}
+#busy:not(:popover-open):not(.on){display:none}
+#busy .box{background:#fff;border-radius:24px;box-shadow:var(--sh3);padding:20px 30px 16px;display:flex;flex-direction:column;align-items:center;gap:8px}
+#busy .spin{position:relative;width:88px;height:88px;display:grid;place-items:center}
+#busy .ring{position:absolute;inset:0;border-radius:50%;border:4px solid #e6defc;border-top-color:#6a1ff0;animation:bspin .9s linear infinite}
+#busy img{width:46px;height:auto;animation:bpulse 1.3s ease-in-out infinite}
+#busy small{font-weight:700;color:var(--purple-dark);font-size:.82rem}
+@keyframes bspin{to{transform:rotate(360deg)}}@keyframes bpulse{50%{transform:scale(.88);opacity:.75}}@keyframes bfade{from{opacity:0}to{opacity:1}}
+@media (max-width:900px){.ops{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .top{gap:6px;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top))}
+  .top .lbl,.top .who{display:none}
+  .top .ib{padding:7px 8px}
+  .viewsw button{padding:5px 9px;font-size:.76rem}
+  .ops{padding:10px;gap:10px}
+  .trips{grid-template-columns:1fr}
+  .bar{gap:8px}.bar .fld{flex:1 1 100%;min-width:0;order:-1}
+  .daynav input{flex:1;min-width:0}
+  #btn-newtrip{width:100%}
+  dialog,dialog.sheet{margin:auto auto 0;border-radius:20px 20px 0 0;max-width:100%;width:100%!important;max-height:94vh}
+  dialog .dh{padding:12px 14px}dialog .db{padding:12px 14px}dialog .df{padding:10px 14px}
+  .kv{grid-template-columns:96px 1fr}
+  .fcard{padding:10px 11px 12px}
+  .ticket .qr{width:190px;height:190px}
+}
+@media (max-width:360px){
+  .top{gap:4px;padding-left:8px;padding-right:8px}.top .brand{font-size:.95rem}
+  .top .ib{padding:6px 7px}
+  .viewsw button{padding:4px 7px;font-size:.72rem}
+}
+.payctl .row{flex-wrap:wrap}
+dialog .df .flash{flex-basis:100%;margin:0 0 2px}
+@media print{.top,#toasts{display:none}}
+</style>
+</head>
+<body>
+
+<div id="login" class="login" hidden>
+  <form class="box" id="login-form" autocomplete="on">
+    <h1>Origo · Nhân viên</h1>
+    <p>Đăng nhập bằng mã nhân viên và mã PIN.</p>
+    <div class="demo-note" id="demo-note" hidden>CHẾ ĐỘ DEMO: dữ liệu giả lưu trong trình duyệt này. Vận hành: <b>demo-vh</b> / <b>123456</b>. Sân bay: <b>demo-sb</b> / <b>123456</b>.</div>
+    <div class="row"><label for="lg-user">Mã nhân viên</label><input id="lg-user" name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>
+    <div class="row"><label for="lg-pin">Mã PIN</label><input id="lg-pin" name="password" type="password" inputmode="numeric" autocomplete="current-password" required></div>
+    <p class="msg" id="lg-msg" role="alert"></p>
+    <button class="btn pri lg" id="lg-btn" type="submit">Đăng nhập</button>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <div class="demo-bar" id="demo-bar" hidden>Chế độ demo: dữ liệu giả, không gửi gì về máy chủ</div>
+  <div class="top">
+    <b class="brand">Origo</b>
+    <span class="who" id="who"></span>
+    <span class="grow"></span>
+    <button class="btn sm ib" id="btn-scan" type="button" title="Quét QR"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20.5 14v.01M14 20.5h.01M17.5 20.5h3v-3"/></svg><span class="lbl">Quét QR</span></button>
+    <button class="btn sm ib" id="btn-reload" type="button" title="Tải lại"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg><span class="lbl">Tải lại</span></button>
+    <button class="btn sm ib" id="btn-logout" type="button" title="Đăng xuất"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5M5 12h11"/></svg><span class="lbl">Đăng xuất</span></button>
+    <div class="viewsw" role="group" aria-label="Chuyển màn"><button type="button" data-view="ops">Vận hành</button><button type="button" data-view="air">Sân bay</button></div>
+  </div>
+
+  <!-- VẬN HÀNH (máy tính) -->
+  <div id="ops" class="ops" hidden>
+    <aside>
+      <section class="zone z-new" data-drop="new" id="zone-new"><h3>Khách mới, chờ xác nhận <span class="chip warn" id="n-new">0</span><small id="s-new"></small></h3><input class="zs" data-zq="new" type="search" placeholder="Tìm khách mới…"><div class="list" id="list-new"></div></section>
+      <section class="zone z-free" data-drop="free" id="zone-free"><h3>Đã xác nhận, chưa xếp chuyến <span class="chip blue" id="n-free">0</span><small id="s-free"></small></h3><input class="zs" data-zq="free" type="search" placeholder="Tìm khách đã xác nhận…"><div class="list" id="list-free"></div></section>
+      <section class="zone z-cancel" data-drop="cancel" id="zone-cancel"><h3>Đã hủy vé, cần liên hệ xếp lại <span class="chip bad" id="n-cancel">0</span><small id="s-cancel"></small></h3><input class="zs" data-zq="cancel" type="search" placeholder="Tìm khách đã hủy…"><div class="list" id="list-cancel"></div></section>
+    </aside>
+    <main>
+      <div class="bar">
+        <button class="btn pri" id="btn-newtrip" type="button">＋ Tạo chuyến</button>
+        <div class="fld"><label for="day">Ngày xem (ngày chuyến chạy)</label><div class="daynav"><button class="btn sm" id="day-prev" type="button" title="Ngày trước">‹</button><input id="day" type="date"><button class="btn sm" id="day-next" type="button" title="Ngày sau">›</button><button class="btn sm line" id="day-today" type="button">Hôm nay</button></div></div>
+      </div>
+      <h2 class="trips-h" id="trips-title"></h2>
+      <div class="trips" id="trips"></div>
+      <p class="empty" id="trips-empty" hidden>Chưa có chuyến nào. Bấm “Tạo chuyến”, rồi kéo khách đã xác nhận vào ô chuyến.</p>
+    </main>
+  </div>
+
+  <!-- SÂN BAY (điện thoại) -->
+  <div id="air" class="air" hidden>
+    <input id="qa" type="search" placeholder="Tìm tên, số điện thoại, mã vé…" style="margin-bottom:4px">
+    <div id="air-list"></div>
+  </div>
+</div>
+
+<dialog id="dlg-ticket"></dialog>
+<dialog id="dlg-trip"></dialog>
+<dialog id="dlg-quick" class="sheet"></dialog>
+<dialog id="dlg-qr"></dialog>
+<dialog id="dlg-scan"></dialog>
+<dialog id="dlg-ask" class="sheet"></dialog>
+<div id="toasts" popover="manual" aria-live="polite"></div>
+<div id="busy" popover="manual" role="alert" aria-live="assertive"><div class="box"><div class="spin"><span class="ring"></span><img src="logo.png" alt="" onerror="this.remove()"></div><small>Đang xử lý…</small></div></div>
+
+<script src="qrcode.js"></script>
+<script src="jsQR.js"></script>
+<script>
+'use strict';
+/* =====================================================================================
+   ORIGO – trang nhân viên (GitHub Pages). Mọi dữ liệu và quyền nằm ở Apps Script; trang này chỉ hiển thị.
+   Thêm ?demo=1 vào link để xem thử với dữ liệu giả (không gọi máy chủ).
+   Mở bằng ?t=<mã vé> (quét QR trên vé) để tra thẳng một vé.
+   ===================================================================================== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbxmvJRcGbiHd9MSKfyGIRDCIR3N4vp_KvgGciny-aSlW5pltRI6ykctX5nskrmqOHY/exec';
+const HOTLINE = '0325 392 290';
+const PARAMS = new URLSearchParams(location.search);
+const DEMO = PARAMS.has('demo');
+const OPS = 'Vận hành', AIR = 'Sân bay';
+const ST = { NEW: 'Mới', OK: 'Đã xác nhận', ASSIGNED: 'Đã xếp chuyến', PICKED: 'Đã đón', CANCEL: 'Hủy' };
+const PAYYES = 'Đã thanh toán';
+const SKEY = DEMO ? 'origo_demo_session' : 'origo_session';
+
+const $ = (s, el) => (el || document).querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = (n) => String(n).padStart(2, '0');
+const money = (n) => Number(n || 0).toLocaleString('vi-VN') + 'đ';
+const fmtD = (iso) => (iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) : '');
+const localToday = () => { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+
+let session = null;
+try { session = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) {}
+const S = { role: '', name: '', trips: [], tickets: [], today: localToday(), date: localToday(), view: 'ops', qs: { new: '', free: '', cancel: '' }, price: 80000, loaded: false };
+
+/* ---------------- gọi máy chủ ---------------- */
+async function rawApi(action, data) {
+  if (DEMO) return demoApi(action, Object.assign({ token: session && session.token }, data));
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 30000);
+  try {
+    const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ action, token: session && session.token }, data)), signal: ctl.signal });
+    return await res.json();
+  } catch (e) {
+    return { ok: false, error: 'network' };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+const MSG = {
+  forbidden: 'Bạn không có quyền thực hiện thao tác này.', busy: 'Hệ thống đang bận, thử lại sau vài giây.', server: 'Lỗi hệ thống, thử lại.',
+  network: 'Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.', unknown: 'Lệnh không hợp lệ.',
+};
+// Mọi lệnh sau đăng nhập đi qua đây: token sai/hết hạn thì tự đăng xuất; lỗi thì báo và trả null
+// Màn chờ Origo: bật khi đang gọi máy chủ, khóa chuột và bàn phím. Trong lúc một lệnh đang chạy, lệnh khác bị bỏ qua (chống bấm đúp).
+let inflight = false, busyTimer = 0;
+function busyOn() {
+  clearTimeout(busyTimer);
+  inflight = true;
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  const b = $('#busy');
+  try { if (b.showPopover) { if (b.matches(':popover-open')) b.hidePopover(); b.showPopover(); } else b.classList.add('on'); } catch (e) { b.classList.add('on'); }
+}
+function busyOff() {
+  inflight = false;
+  clearTimeout(busyTimer);
+  busyTimer = setTimeout(() => { // chờ một nhịp ngắn: các lệnh nối tiếp nhau (lưu rồi xếp chuyến) không làm màn chờ nháy
+    if (inflight) return;
+    const b = $('#busy');
+    try { b.hidePopover(); } catch (e) {}
+    b.classList.remove('on');
+  }, 160);
+}
+document.addEventListener('keydown', (e) => { if (inflight) e.preventDefault(); }, true);
+async function api(action, data, opts) {
+  const silent = opts && opts.silent; // quét ngầm định kỳ: không hiện màn chờ, không báo lỗi
+  if (!silent) { if (inflight) return null; busyOn(); }
+  let r;
+  try { r = await rawApi(action, data); } finally { if (!silent) busyOff(); }
+  if (r && r.error === 'auth') { logout('Phiên đăng nhập đã hết hoặc bị thu hồi. Hãy đăng nhập lại.'); return null; }
+  if (!r || r.ok !== true) { if (!silent) toast((r && r.message) || MSG[r && r.error] || 'Có lỗi (' + (r && r.error) + ')', 'err'); return null; }
+  return r;
+}
+function toast(text, kind) {
+  if (kind === 'ok' && $('#dlg-ticket').open) return; // trong popup vé đã có dòng thông báo xanh riêng
+  const box = $('#toasts');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (kind || '');
+  el.textContent = text;
+  el.title = 'Chạm để ẩn';
+  el.addEventListener('click', () => { el.remove(); if (!box.children.length) try { box.hidePopover(); } catch (e) {} }); // chạm vào thông báo là ẩn ngay, không che nút bên dưới
+  box.appendChild(el);
+  try { if (box.showPopover) { if (box.matches(':popover-open')) box.hidePopover(); box.showPopover(); } } catch (e) {} // mở lại để nằm trên cả hộp thoại đang mở
+  setTimeout(() => { el.remove(); if (!box.children.length) try { box.hidePopover(); } catch (e) {} }, kind === 'err' || kind === 'warn' ? 6000 : 2800);
+}
+
+/* ---------------- đăng nhập / đăng xuất ---------------- */
+function showLogin(msg) {
+  $('#app').hidden = true;
+  $('#login').hidden = false;
+  $('#lg-msg').textContent = msg || '';
+  $('#demo-note').hidden = !DEMO;
+  $('#lg-user').value = localStorage.getItem('origo_user') || '';
+  (($('#lg-user').value) ? $('#lg-pin') : $('#lg-user')).focus();
+}
+async function logout(msg) {
+  const had = session;
+  session = null;
+  localStorage.removeItem(SKEY);
+  stopPoll();
+  if (had && !msg) { session = had; await rawApi('logout'); session = null; } // chủ động đăng xuất: thu hồi token ở máy chủ
+  S.loaded = false;
+  showLogin(msg);
+}
+$('#login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const user = $('#lg-user').value.trim();
+  const pin = $('#lg-pin').value.trim();
+  const btn = $('#lg-btn');
+  if (inflight) return;
+  btn.disabled = true;
+  $('#lg-msg').textContent = '';
+  busyOn();
+  let r;
+  try { r = await rawApi('login', { user, pin }); } finally { busyOff(); btn.disabled = false; }
+  if (r && r.ok) {
+    session = { token: r.token, name: r.name, role: r.role };
+    localStorage.setItem(SKEY, JSON.stringify(session));
+    localStorage.setItem('origo_user', user);
+    $('#lg-pin').value = '';
+    startApp();
+  } else {
+    $('#lg-pin').value = '';
+    $('#lg-msg').textContent = r && r.error === 'locked' ? 'Nhập sai quá nhiều lần. Thử lại sau khoảng ' + (r.waitMinutes || 10) + ' phút.' : r && r.error === 'network' ? MSG.network : 'Sai mã nhân viên hoặc mã PIN.';
+  }
+});
+$('#btn-logout').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+$('#btn-reload').addEventListener('click', () => loadBoard());
+
+/* ---------------- chuyển màn Vận hành / Sân bay (nút góc phải) ---------------- */
+const VKEY = DEMO ? 'origo_demo_view' : 'origo_view';
+function setView(v, noLoad) {
+  S.view = v === 'air' ? 'air' : 'ops';
+  localStorage.setItem(VKEY, S.view);
+  $('#ops').hidden = S.view !== 'ops';
+  $('#air').hidden = S.view !== 'air';
+  document.querySelectorAll('.viewsw [data-view]').forEach((b) => { const on = b.dataset.view === S.view; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+  if (!noLoad) loadBoard();
+}
+document.querySelectorAll('.viewsw [data-view]').forEach((b) => b.addEventListener('click', () => { if (b.dataset.view !== S.view && !inflight) setView(b.dataset.view); }));
+
+/* ---------------- khởi động ---------------- */
+async function startApp() {
+  S.role = session.role;
+  S.name = session.name;
+  $('#login').hidden = true;
+  $('#app').hidden = false;
+  $('#demo-bar').hidden = !DEMO;
+  $('#who').textContent = S.name;
+  $('#btn-logout').title = 'Đăng xuất (' + S.name + ')';
+  S.date = localToday();
+  $('#day').value = S.date;
+  // Không phân quyền: ai đăng nhập cũng dùng được cả hai màn. Màn mở đầu = màn dùng lần trước trên máy này; chưa có thì theo cột Vai trò
+  setView(localStorage.getItem(VKEY) || (S.role === AIR ? 'air' : 'ops'), true);
+  await loadBoard();
+  const t = PARAMS.get('t');
+  if (t && S.loaded) openByCode(t.toUpperCase());
+  startPoll();
+}
+async function loadBoard(silent) {
+  const r = await api('board', S.view === 'ops' ? { view: 'ops', date: S.date } : { view: 'air' }, { silent });
+  if (!r) return;
+  S.trips = r.trips; S.tickets = r.tickets; S.price = r.price; S.today = r.today; S.loaded = true;
+  if (S.view === 'ops' && r.date) { S.date = r.date; $('#day').value = r.date; }
+  render();
+}
+let pollTimer = null;
+function startPoll() { stopPoll(); pollTimer = setInterval(() => { if (document.visibilityState === 'visible' && !document.querySelector('dialog[open]') && session && !inflight) loadBoard(true); }, 60000); }
+function stopPoll() { clearInterval(pollTimer); }
+
+/* ---------------- dữ liệu cục bộ ---------------- */
+const findT = (code) => S.tickets.find((t) => t.code === code);
+const findTrip = (code) => S.trips.find((t) => t.code === code);
+const inTrip = (t) => t.status === ST.ASSIGNED || t.status === ST.PICKED;
+function merge(r) {
+  if (r.ticket) { const i = S.tickets.findIndex((t) => t.code === r.ticket.code); if (i >= 0) S.tickets[i] = r.ticket; else S.tickets.push(r.ticket); }
+  if (r.trip) { const i = S.trips.findIndex((t) => t.code === r.trip.code); if (i >= 0) S.trips[i] = r.trip; else S.trips.push(r.trip); if (r.trip.status === 'Đã hủy') S.trips = S.trips.filter((t) => t.code !== r.trip.code); }
+  (r.warn || []).forEach((w) => toast(w, 'warn'));
+  render();
+}
+const peopleIn = (code) => S.tickets.filter((t) => t.trip === code && inTrip(t)).reduce((n, t) => n + (t.people || 0), 0);
+const byFlight = (a, b) => (a.date + a.hour + a.name).localeCompare(b.date + b.hour + b.name);
+const matches = (t, q) => { q = (q || '').trim().toLowerCase(); return !q || [t.name, t.phone, t.code, t.flight, t.origin].join(' ').toLowerCase().includes(q); };
+
+/* ---------------- vẽ giao diện ---------------- */
+function render() { if (S.view === 'ops') renderOps(); else renderAir(); }
+// Icon tiền: xanh lá = đã thanh toán; tiền xám gạch chéo đỏ = chưa thanh toán
+const BILL = '<rect x="2.5" y="7" width="23" height="14" rx="2.5" fill="#fff" stroke="COLOR" stroke-width="2"/><circle cx="14" cy="14" r="3.4" stroke="COLOR" stroke-width="2"/>';
+function payIcon(paid) {
+  return paid
+    ? '<span class="pay" title="Đã thanh toán"><svg viewBox="0 0 28 28" fill="none">' + BILL.replace(/COLOR/g, '#16a34a').replace('fill="#fff"', 'fill="#dcfce7"') + '<path d="M6 11v.01M22 17v.01" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round"/></svg></span>'
+    : '<span class="pay" title="Chưa thanh toán"><svg viewBox="0 0 28 28" fill="none">' + BILL.replace(/COLOR/g, '#9ca3af') + '<path d="M4 24L24 4" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/><path d="M4 24L24 4" stroke="#dc2626" stroke-width="2.8" stroke-linecap="round"/></svg></span>';
+}
+// Icon hủy (vòng tròn đỏ có dấu ✕) hiện ngay trên dòng khách để nhìn là biết
+function cancelIcon(title) {
+  return '<span class="cx" title="' + title + '"><svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#dc2626"/><path d="M7.2 7.2l7.6 7.6M14.8 7.2l-7.6 7.6" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></span>';
+}
+function tkHtml(t, o) {
+  o = o || {};
+  const cls = ['tk'];
+  if (t.status === ST.PICKED) cls.push('picked');
+  if (t.status === ST.CANCEL) cls.push('cancel');
+  const justReleased = t.status === ST.OK && t.releasedTrip;
+  if (justReleased && o.air) cls.push('released');
+  const paid = t.pay === PAYYES;
+  const drag = o.drag && t.status !== ST.PICKED ? ' draggable="true"' : '';
+  return '<div class="' + cls.join(' ') + '" data-t="' + esc(t.code) + '"' + drag + '>'
+    + '<div class="l1"><b>' + esc(t.name) + '</b>'
+    + (t.status === ST.PICKED ? '<span class="chip ok">Đã đón</span>' : '')
+    + (justReleased && o.air ? '<span class="chip warn">Đã hủy chuyến</span>' : '')
+    + '<span class="pp">' + t.people + ' người</span>'
+    + (justReleased ? cancelIcon('Đã hủy chuyến') : t.status === ST.CANCEL ? cancelIcon('Đã hủy vé') : '')
+    + payIcon(paid) + '</div>'
+    + '<div class="l2">' + esc(t.code) + ' · ' + esc(t.flight) + ' · ' + esc(t.hour) + ' ' + fmtD(t.date) + (o.origin ? ' · từ ' + esc(t.origin) : '') + (justReleased && !o.air ? ' · vừa hủy chuyến ' + esc(t.releasedTrip) : '') + '</div></div>';
+}
+function setList(sel, items, emptyText) {
+  $(sel).innerHTML = items.length ? items.map((t) => tkHtml(t, { drag: true })).join('') : '<div class="empty">' + emptyText + '</div>';
+}
+function renderOps() {
+  const T = S.tickets;
+  const dl = 'ngày ' + fmtD(S.date);
+  // Mỗi nhóm có ô tìm riêng. Không tìm: khách mới hiện mọi ngày, hai nhóm còn lại theo ngày đang xem. Có tìm: tìm trên mọi ngày đã tải
+  [[ST.NEW, 'new', 'Không có khách mới.'], [ST.OK, 'free', 'Chưa có khách chờ xếp chuyến. Kéo khách đang trong chuyến vào đây để hủy chuyến của khách.'], [ST.CANCEL, 'cancel', 'Không có vé hủy.']].forEach(([st, key, empty]) => {
+    const q = S.qs[key].trim();
+    const list = T.filter((t) => t.status === st && (q ? matches(t, q) : st === ST.NEW || t.date === S.date)).sort(byFlight);
+    setList('#list-' + key, list, q ? 'Không có khách khớp.' : empty);
+    $('#n-' + key).textContent = list.length;
+    $('#s-' + key).textContent = key === 'new' ? 'mọi ngày bay' : q ? 'mọi ngày' : dl;
+  });
+  $('#trips-title').textContent = 'Chuyến ngày ' + fmtD(S.date) + (S.date === S.today ? ' (hôm nay)' : '');
+  const trips = S.trips.slice().sort((a, b) => (a.date + a.hour).localeCompare(b.date + b.hour));
+  $('#trips-empty').hidden = trips.length > 0;
+  $('#trips-empty').textContent = 'Chưa có chuyến nào ngày ' + fmtD(S.date) + '. Bấm “Tạo chuyến”, rồi kéo khách đã xác nhận vào ô chuyến.';
+  $('#trips').innerHTML = trips.map((tr) => {
+    const list = T.filter((t) => t.trip === tr.code && inTrip(t)).sort(byFlight);
+    const used = list.reduce((n, t) => n + t.people, 0);
+    const state = used > tr.capacity ? 'over' : used === tr.capacity ? 'full' : '';
+    const picked = list.filter((t) => t.status === ST.PICKED).length;
+    return '<section class="trip" data-drop="trip" data-trip="' + esc(tr.code) + '">'
+      + '<header data-edit-trip="' + esc(tr.code) + '" title="Bấm để sửa chuyến"><b>' + esc(tr.code) + '</b><span class="chip blue">' + esc(tr.hour) + ' · ' + fmtD(tr.date) + '</span><span class="cap ' + state + '">' + used + '/' + tr.capacity + '</span></header>'
+      + '<div class="meta">' + (tr.driver ? esc(tr.driver) : 'Chưa có tài xế') + (tr.plate ? ' · ' + esc(tr.plate) : '') + (list.length ? ' · đã đón ' + picked + '/' + list.length : '') + '</div>'
+      + '<div class="list">' + (list.length ? list.map((t) => tkHtml(t, { drag: true })).join('') : '<div class="empty">Kéo khách vào đây</div>') + '</div></section>';
+  }).join('');
+}
+function renderAir() {
+  const q = $('#qa').value.trim().toLowerCase();
+  const hit = (t) => !q || [t.name, t.phone, t.code, t.flight].join(' ').toLowerCase().includes(q);
+  const trips = S.trips.slice().sort((a, b) => (a.date + a.hour).localeCompare(b.date + b.hour));
+  let html = '', lastDay = '';
+  trips.forEach((tr) => {
+    const all = S.tickets.filter((t) => t.trip === tr.code && inTrip(t)).sort(byFlight);
+    // khách vừa bị hủy chuyến: vẫn hiện (mờ, có chữ "Đã hủy chuyến") để khôi phục lại nếu bấm nhầm
+    const rel = S.tickets.filter((t) => t.status === ST.OK && t.releasedTrip === tr.code).sort(byFlight);
+    const list = all.filter(hit), relList = rel.filter(hit);
+    if (q && !list.length && !relList.length) return;
+    if (tr.date !== lastDay) { lastDay = tr.date; html += '<div class="day">' + (tr.date === S.today ? 'Hôm nay' : tr.date < S.today ? 'Hôm qua' : 'Ngày mai') + ' · ' + fmtD(tr.date) + '</div>'; }
+    const used = all.reduce((n, t) => n + t.people, 0);
+    const picked = all.filter((t) => t.status === ST.PICKED).length;
+    const open = q || tr.date === S.today ? ' open' : '';
+    html += '<details' + open + ' data-trip="' + esc(tr.code) + '"><summary><b>' + esc(tr.hour) + '</b><span class="meta">' + esc(tr.code) + (tr.plate ? ' · ' + esc(tr.plate) : '') + (tr.driver ? ' · ' + esc(tr.driver) : '') + '</span><span class="chip ' + (picked === all.length && all.length ? 'ok' : 'blue') + '" style="margin-left:auto">' + picked + '/' + all.length + ' đã đón · ' + used + ' người</span></summary><div class="list">'
+      + (list.length || relList.length ? list.map((t) => tkHtml(t, { air: true })).join('') + relList.map((t) => tkHtml(t, { air: true })).join('') : '<div class="empty">Chưa có khách trong chuyến</div>') + '</div></details>';
+  });
+  if (!html) html = '<p class="empty">' + (q ? 'Không thấy khách nào khớp.' : 'Chưa có chuyến nào cho hôm nay và ngày mai.') + '</p>';
+  if (/^OG-[A-Z0-9]{3,}/i.test($('#qa').value.trim()) && !S.tickets.some((t) => t.code === $('#qa').value.trim().toUpperCase())) {
+    html = '<button class="btn pri lg" type="button" data-lookup="' + esc($('#qa').value.trim().toUpperCase()) + '" style="margin:8px 0">Tra mã vé ' + esc($('#qa').value.trim().toUpperCase()) + '</button>' + html;
+  }
+  $('#air-list').innerHTML = html;
+}
+$('#qa').addEventListener('input', renderAir);
+
+/* ---------------- sự kiện bảng vận hành ---------------- */
+document.querySelectorAll('.zs').forEach((i) => i.addEventListener('input', () => { S.qs[i.dataset.zq] = i.value; renderOps(); }));
+function goDay(iso) { if (!iso) return; S.date = iso; $('#day').value = iso; loadBoard(); }
+$('#day').addEventListener('change', (e) => goDay(e.target.value));
+$('#day-prev').addEventListener('click', () => goDay(addDays(S.date, -1)));
+$('#day-next').addEventListener('click', () => goDay(addDays(S.date, 1)));
+$('#day-today').addEventListener('click', () => goDay(localToday()));
+$('#btn-newtrip').addEventListener('click', () => openTrip(null));
+document.addEventListener('click', (e) => {
+  const tk = e.target.closest('.tk[data-t]');
+  if (tk) { openByCode(tk.dataset.t); return; }
+  const et = e.target.closest('[data-edit-trip]');
+  if (et) { openTrip(et.dataset.editTrip); return; }
+  const lk = e.target.closest('[data-lookup]');
+  if (lk) openByCode(lk.dataset.lookup);
+});
+// kéo thả
+let dragCode = '';
+document.addEventListener('dragstart', (e) => { const tk = e.target.closest && e.target.closest('.tk[data-t]'); if (!tk) return; dragCode = tk.dataset.t; tk.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragCode); });
+document.addEventListener('dragend', () => { dragCode = ''; document.querySelectorAll('.dragging,.over').forEach((x) => x.classList.remove('dragging', 'over')); });
+document.addEventListener('dragover', (e) => { const z = e.target.closest && e.target.closest('[data-drop]'); if (!z || !dragCode) return; e.preventDefault(); document.querySelectorAll('.over').forEach((x) => x !== z && x.classList.remove('over')); z.classList.add('over'); });
+document.addEventListener('drop', async (e) => {
+  const z = e.target.closest && e.target.closest('[data-drop]');
+  if (!z || !dragCode) return;
+  e.preventDefault();
+  const code = dragCode;
+  dragCode = '';
+  document.querySelectorAll('.over,.dragging').forEach((x) => x.classList.remove('over', 'dragging'));
+  const t = findT(code);
+  if (!t) return;
+  const zone = z.dataset.drop;
+  if (zone === 'trip') await doAssign(t, z.dataset.trip);
+  else if (zone === 'free') {
+    if (t.status === ST.NEW || t.status === ST.CANCEL) await doConfirm(t);
+    else if (t.status === ST.ASSIGNED) await doRelease(t);
+  } else if (zone === 'cancel') {
+    if (t.status !== ST.CANCEL) await doCancel(t);
+  } else if (zone === 'new') toast('Đơn mới chỉ chuyển sang “Đã xác nhận” sau khi gọi khách (nút Xác nhận).', 'warn');
+});
+
+/* ---------------- thao tác (dùng chung cho kéo thả, popup, điện thoại) ---------------- */
+async function doConfirm(t) { const was = t.status; const r = await api('ticket_confirm', { code: t.code }); if (r) { merge(r); toast(was === ST.CANCEL ? 'Đã khôi phục ' + t.name + ', về nhóm chưa xếp chuyến.' : 'Đã xác nhận ' + t.name, 'ok'); } return r; }
+async function doCancel(t) {
+  const reason = await askReason('Hủy vé của ' + t.name, ['Khách hủy', 'Không liên lạc được', 'Đặt trùng']);
+  if (reason == null) return null;
+  const r = await api('ticket_cancel', { code: t.code, reason });
+  if (r) { merge(r); toast('Đã hủy vé ' + t.name + ', chuyển sang nhóm đã hủy.', 'ok'); }
+  return r;
+}
+async function doAssign(t, tripCode) { if (t.trip === tripCode) return null; const r = await api('ticket_assign', { code: t.code, trip: tripCode }); if (r) { merge(r); toast('Đã xếp ' + t.name + ' vào chuyến ' + tripCode, 'ok'); } return r; }
+async function doRelease(t) {
+  const reason = await askReason('Hủy chuyến của ' + t.name + ' (chuyến ' + t.trip + ')', ['Không liên lạc được', 'Khách hủy', 'Lệch chuyến bay', 'Chờ quá lâu']);
+  if (reason == null) return null;
+  const r = await api('ticket_release', { code: t.code, reason });
+  if (r) { merge(r); toast('Đã hủy chuyến của ' + t.name + ', khách về nhóm chưa xếp chuyến.', 'ok'); }
+  return r;
+}
+async function doRejoin(t) { const r = await api('ticket_rejoin', { code: t.code }); if (r) { merge(r); toast('Đã khôi phục ' + t.name + ' vào chuyến ' + r.ticket.trip, 'ok'); } return r; }
+async function doPickup(t, undo) { const r = await api('ticket_pickup', { code: t.code, undo: !!undo }); if (r) { merge(r); toast(undo ? 'Đã bỏ đánh dấu đã đón' : 'Đã đón ' + t.name, 'ok'); } return r; }
+async function doPay(t, paid) { const r = await api('ticket_pay', { code: t.code, paid }); if (r) { merge(r); toast(paid ? 'Đã ghi nhận thanh toán' : 'Đã bỏ đánh dấu thanh toán', 'ok'); } return r; }
+
+function askReason(title, quick) {
+  return new Promise((resolve) => {
+    const d = $('#dlg-ask');
+    d.innerHTML = '<div class="dh"><h2>' + esc(title) + '</h2></div><div class="db"><label for="ask-t">Lý do (bắt buộc)</label><div class="reasons">' + quick.map((q) => '<button type="button" class="btn sm line" data-q="' + esc(q) + '">' + esc(q) + '</button>').join('') + '</div><textarea id="ask-t" rows="2" maxlength="200" placeholder="Ví dụ: gọi 3 lần không bắt máy"></textarea></div><div class="df"><button class="btn bad" id="ask-ok" type="button">Xác nhận</button><button class="btn" id="ask-no" type="button">Bỏ qua</button></div>';
+    let done = false;
+    const finish = (v) => { if (done) return; done = true; d.close(); resolve(v); };
+    d.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click', () => { $('#ask-t').value = b.dataset.q; }));
+    $('#ask-ok').addEventListener('click', () => { const v = $('#ask-t').value.trim(); if (v.length < 2) { toast('Cần ghi lý do.', 'warn'); return; } finish(v); });
+    $('#ask-no').addEventListener('click', () => finish(null));
+    d.addEventListener('close', () => finish(null), { once: true });
+    d.showModal();
+    $('#ask-t').focus();
+  });
+}
+
+/* ---------------- mở vé ---------------- */
+async function openByCode(code) {
+  let t = findT(code);
+  if (!t) {
+    const r = await api('ticket', { code });
+    if (!r) return;
+    t = r.ticket;
+    S.tickets.push(t); // vé ngoài khoảng ngày đang xem: thêm tạm để mở được
+    if (r.trip && !findTrip(r.trip.code)) S.trips.push(r.trip);
+  }
+  if (S.view === 'ops') openTicket(t.code); else openQuick(t.code);
+}
+
+/* ---------- popup chi tiết (vận hành) ---------- */
+function tripOptions(t) {
+  const list = S.trips.filter((tr) => tr.status !== 'Đã hủy').sort((a, b) => (a.date + a.hour).localeCompare(b.date + b.hour));
+  return '<option value="">— chưa xếp chuyến —</option>' + list.map((tr) => '<option value="' + esc(tr.code) + '"' + (tr.code === t.trip ? ' selected' : '') + '>' + esc(tr.code) + ' · ' + esc(tr.hour) + ' ' + fmtD(tr.date) + ' · ' + peopleIn(tr.code) + '/' + tr.capacity + '</option>').join('');
+}
+// Điều khiển trạng thái: bên trái luôn hiện trạng thái HIỆN TẠI ("Chưa thanh toán" / "Đã thanh toán"),
+// bên phải là nút hành động ("Xác nhận thanh toán") hoặc dấu ✕ để chuyển ngược lại
+function stateCtl(o) {
+  return '<div class="payctl ' + (o.yes ? 'yes' : 'no') + '"><div class="row"><span class="st">' + (o.yes ? o.yesLabel : o.noLabel) + '</span>'
+    + (o.yes ? '<button type="button" class="x" data-act="' + o.xAct + '" title="' + o.xTitle + '" aria-label="' + o.xTitle + '">✕</button>'
+      : '<button type="button" class="btn pri go' + (o.big ? '' : ' sm') + '" data-act="' + o.goAct + '">' + o.goLabel + '</button>')
+    + '</div>' + (o.sub ? '<div class="amt">' + o.sub + '</div>' : '') + '</div>';
+}
+function payCtl(t, big) {
+  const paid = t.pay === PAYYES;
+  return stateCtl({ big, yes: paid, yesLabel: 'Đã thanh toán', noLabel: 'Chưa thanh toán', goAct: 'pay', goLabel: 'Xác nhận thanh toán', xAct: 'unpay', xTitle: 'Chuyển về chưa thanh toán',
+    sub: (paid ? money(t.total) : 'Cần thu ' + money(t.total)) + (t.payBy ? ' · ' + esc(t.payBy) : '') });
+}
+function pickCtl(t, big) {
+  const picked = t.status === ST.PICKED;
+  return stateCtl({ big, yes: picked, yesLabel: 'Đã đón', noLabel: 'Chưa đón', goAct: 'pick', goLabel: 'Xác nhận đã đón', xAct: 'unpick', xTitle: 'Chuyển về chưa đón',
+    sub: picked ? esc(t.pickedAt) + ' · ' + esc(t.pickedBy) : '' });
+}
+// msg: dòng thông báo xanh hiện ngay trong popup sau khi một thao tác thành công (vd "Đã lưu")
+function openTicket(code, msg) {
+  const t = findT(code);
+  if (!t) return;
+  const d = $('#dlg-ticket');
+  const st = t.status;
+  const paid = t.pay === PAYYES;
+  const tripOk = st === ST.OK || st === ST.ASSIGNED || st === ST.CANCEL; // vé Mới phải xác nhận trước; vé đã đón thì không đổi chuyến
+  const inTripNow = st === ST.ASSIGNED || st === ST.PICKED; // chỉ vé đã có chuyến mới có vé QR
+  d.dataset.code = code;
+  const payCard = payCtl(t);
+  const pickCard = st === ST.ASSIGNED || st === ST.PICKED ? pickCtl(t) : '';
+  d.innerHTML =
+    '<div class="dh hero"><div style="flex:1;min-width:0"><h2>' + esc(t.name) + '</h2><small>' + esc(t.code) + ' · đặt lúc ' + esc(t.time) + '</small></div><span class="chip">' + esc(st) + '</span><button class="btn sm" type="button" data-close>✕</button></div>'
+    + '<div class="db">'
+    + payCard + pickCard
+    + '<div class="fcard"><h4>Hành khách</h4><div class="g2">'
+    + '<div><label>Họ tên</label><input id="f-name" value="' + esc(t.name) + '" maxlength="80"></div>'
+    + '<div><label>Số điện thoại</label><input id="f-phone" value="' + esc(t.phone) + '" inputmode="tel"></div>'
+    + '<div class="full"><label>Email</label><input id="f-email" value="' + esc(t.email) + '" inputmode="email"></div></div></div>'
+    + '<div class="fcard"><h4>Chuyến bay của khách</h4><div class="g2">'
+    + '<div><label>Cất cánh từ</label><input id="f-origin" value="' + esc(t.origin) + '" maxlength="60"></div>'
+    + '<div><label>Mã chuyến bay</label><input id="f-flight" value="' + esc(t.flight) + '" maxlength="7" style="text-transform:uppercase"></div>'
+    + '<div><label>Ngày hạ cánh</label><input id="f-date" type="date" value="' + esc(t.date) + '"></div>'
+    + '<div><label>Giờ hạ cánh (đổi khi chuyến bay delay)</label><input id="f-hour" type="time" value="' + esc(t.hour) + '"></div></div></div>'
+    + '<div class="fcard"><h4>Số người và tiền</h4><div class="g2">'
+    + '<div><label>Số người</label><input id="f-people" type="number" min="1" max="999" value="' + t.people + '"></div>'
+    + '<div><label>Tổng tiền (đ)</label><input id="f-total" type="number" min="0" step="1000" value="' + t.total + '"></div></div></div>'
+    + '<div class="fcard"><h4>Ghi chú</h4><textarea id="f-note" rows="3" maxlength="600" placeholder="Ghi chú cho vé này…">' + esc(t.note) + '</textarea></div>'
+    + '<div class="fcard"><h4>Chuyến xe</h4><label>Chọn chuyến rồi bấm “Lưu thay đổi” mới áp dụng</label><select id="f-trip"' + (tripOk ? '' : ' disabled') + '>' + tripOptions(t) + '</select>'
+    + (st === ST.NEW ? '<p class="meta" style="margin:8px 0 0">Cần bấm “Đã gọi, xác nhận” trước khi xếp vào chuyến.</p>' : '')
+    + (t.releaseReason ? '<p class="meta" style="margin:8px 0 0;color:var(--amber);font-weight:600">Lý do hủy chuyến gần nhất: ' + esc(t.releaseReason) + '</p>' : '') + '</div>'
+    + '</div><div class="df"><div class="flash ok" id="flash">' + (msg ? '✓ ' + esc(msg) : '') + '</div>'
+    + '<button class="btn pri" id="btn-save" data-act="save" disabled>Lưu thay đổi</button>'
+    + '<span class="hint-dirty" id="dirty-hint" hidden>Có thay đổi chưa lưu</span>'
+    + (st === ST.NEW ? '<button class="btn ok" data-act="confirm">Đã gọi, xác nhận</button>' : '')
+    + (st === ST.CANCEL ? '<button class="btn ok" data-act="confirm">Khôi phục vé</button>' : '')
+    + (inTripNow ? '<button class="btn line" data-act="qr">Lấy vé (QR)</button>' : '')
+    + (st !== ST.CANCEL && st !== ST.PICKED ? '<button class="btn line bad" data-act="cancel" style="margin-left:auto">Hủy vé</button>' : '')
+    + '</div>';
+  if (!d.open) d.showModal();
+  const people = $('#f-people', d), total = $('#f-total', d);
+  let touched = false;
+  total.addEventListener('input', () => { touched = true; });
+  people.addEventListener('input', () => { if (!touched) total.value = (Number(people.value) || 0) * S.price; }); // đổi số người thì tự tính lại tiền, trừ khi vừa sửa tiền tay
+  // Chưa lưu thì chưa áp dụng gì cả: nút Lưu chỉ sáng khi có thay đổi, và trong lúc đó các nút thao tác khác bị khóa để khỏi nhảy dòng
+  const refresh = () => {
+    const cur = findT(code);
+    const dirty = Object.keys(ticketFields(d, cur)).length > 0 || tripChange(d, cur) !== null;
+    $('#btn-save', d).disabled = !dirty;
+    $('#dirty-hint', d).hidden = !dirty;
+    d.querySelectorAll('[data-act]').forEach((b) => { if (b.id !== 'btn-save') b.disabled = dirty; });
+  };
+  d.querySelectorAll('input,textarea').forEach((el) => el.addEventListener('input', refresh));
+  $('#f-trip', d).addEventListener('change', refresh);
+  if (msg) setTimeout(() => { const f = $('#flash', d); if (f && d.dataset.code === code) f.textContent = ''; }, 4000);
+}
+function ticketFields(d, t) {
+  const v = (id) => $('#' + id, d).value;
+  const f = { name: v('f-name'), phone: v('f-phone'), email: v('f-email'), origin: v('f-origin'), flight: v('f-flight'), date: v('f-date'), hour: v('f-hour'), people: Number(v('f-people')), total: Number(v('f-total')), note: v('f-note') };
+  const cur = { name: t.name, phone: t.phone, email: t.email, origin: t.origin, flight: t.flight, date: t.date, hour: t.hour, people: t.people, total: t.total, note: t.note };
+  const diff = {};
+  Object.keys(f).forEach((k) => { if (String(f[k]).trim() !== String(cur[k])) diff[k] = f[k]; });
+  return diff;
+}
+// null = chưa đổi chuyến; '' = hủy chuyến của khách; mã chuyến = xếp vào chuyến đó
+function tripChange(d, t) {
+  const sel = $('#f-trip', d);
+  if (!sel || sel.disabled) return null;
+  return sel.value !== (t.trip || '') ? sel.value : null;
+}
+$('#dlg-ticket').addEventListener('click', async (e) => {
+  const d = e.currentTarget;
+  if (e.target.closest('[data-close]')) { d.close(); return; }
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const t = findT(d.dataset.code);
+  if (!t) return;
+  const act = b.dataset.act;
+  b.disabled = true;
+  try {
+    if (act === 'save') {
+      const f = ticketFields(d, t), tc = tripChange(d, t);
+      let saved = false, tripMsg = '';
+      if (Object.keys(f).length) {
+        const r = await api('ticket_update', { code: t.code, fields: f });
+        if (!r) return;
+        merge(r);
+        saved = true;
+      }
+      const cur = findT(t.code);
+      if (tc !== null) {
+        if (tc) { if (await doAssign(cur, tc)) tripMsg = 'xếp vào chuyến ' + tc; }
+        else if (cur.status === ST.ASSIGNED && (await doRelease(cur))) tripMsg = 'hủy chuyến, khách về nhóm chưa xếp chuyến';
+      }
+      openTicket(t.code, saved || tripMsg ? 'Đã lưu' + (tripMsg ? ' và ' + tripMsg : '') : '');
+      return;
+    }
+    let r = true, msg = '';
+    if (act === 'confirm') { const was = t.status; r = await doConfirm(t); msg = was === ST.CANCEL ? 'Đã khôi phục vé, về nhóm chưa xếp chuyến' : 'Đã xác nhận với khách'; }
+    else if (act === 'pick') { r = await doPickup(t); msg = 'Đã ghi nhận đã đón'; }
+    else if (act === 'unpick') { r = await doPickup(t, true); msg = 'Đã bỏ đánh dấu đã đón'; }
+    else if (act === 'pay') { r = await doPay(t, true); msg = 'Đã ghi nhận thanh toán'; }
+    else if (act === 'unpay') { r = await doPay(t, false); msg = 'Đã bỏ đánh dấu thanh toán'; }
+    else if (act === 'qr') { openQr(t.code); return; }
+    else if (act === 'cancel') { const x = await doCancel(t); if (x) d.close(); return; }
+    openTicket(t.code, r ? msg : '');
+  } finally { b.disabled = false; }
+});
+
+/* ---------- popup chuyến ---------- */
+function openTrip(code) {
+  const tr = code ? findTrip(code) : null;
+  const d = $('#dlg-trip');
+  const v = tr || { code: '', date: S.date, hour: '', capacity: 16, driver: '', driverPhone: '', plate: '', note: '' };
+  const used = tr ? peopleIn(tr.code) : 0;
+  d.innerHTML =
+    '<div class="dh"><h2>' + (tr ? 'Chuyến ' + esc(tr.code) : 'Tạo chuyến mới') + '</h2><button class="btn sm" type="button" data-close>✕</button></div><div class="db">'
+    + (tr ? '<p class="meta">Đang có ' + used + '/' + tr.capacity + ' người. Đổi giờ đón khi chuyến bay delay: giờ hạ cánh của từng khách sửa riêng trong vé.</p>' : '<p class="meta">Mã chuyến do hệ thống tự sinh sau khi lưu.</p>')
+    + '<div class="g2"><div><label>Ngày chạy</label><input id="t-date" type="date" value="' + esc(v.date) + '"></div>'
+    + '<div><label>Giờ đón</label><input id="t-hour" type="time" value="' + esc(v.hour) + '"></div>'
+    + '<div><label>Sức chứa (số chỗ)</label><input id="t-cap" type="number" min="1" max="60" value="' + v.capacity + '"><div class="payrow" style="margin-top:6px"><button type="button" class="btn sm line" data-cap="16">Xe 16 chỗ</button><button type="button" class="btn sm line" data-cap="29">Xe 29 chỗ</button></div></div>'
+    + '<div><label>Biển số</label><input id="t-plate" value="' + esc(v.plate) + '" maxlength="20"></div>'
+    + '<div><label>Tài xế</label><input id="t-driver" value="' + esc(v.driver) + '" maxlength="60"></div>'
+    + '<div><label>SĐT tài xế</label><input id="t-dphone" value="' + esc(v.driverPhone) + '" inputmode="tel"></div>'
+    + '<div class="full"><label>Ghi chú</label><textarea id="t-note" rows="2" maxlength="200">' + esc(v.note) + '</textarea></div></div></div>'
+    + '<div class="df"><button class="btn pri" data-act="save">' + (tr ? 'Lưu chuyến' : 'Tạo chuyến') + '</button>'
+    + (tr ? '<button class="btn line bad" data-act="cancel-trip" style="margin-left:auto">Hủy chuyến</button>' : '') + '</div>';
+  d.dataset.code = code || '';
+  d.showModal();
+}
+$('#dlg-trip').addEventListener('click', async (e) => {
+  const d = e.currentTarget;
+  if (e.target.closest('[data-close]')) { d.close(); return; }
+  const cap = e.target.closest('[data-cap]');
+  if (cap) { $('#t-cap', d).value = cap.dataset.cap; return; }
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const code = d.dataset.code;
+  b.disabled = true;
+  try {
+    if (b.dataset.act === 'save') {
+      const f = { date: $('#t-date', d).value, hour: $('#t-hour', d).value, capacity: Number($('#t-cap', d).value), plate: $('#t-plate', d).value, driver: $('#t-driver', d).value, driverPhone: $('#t-dphone', d).value, note: $('#t-note', d).value };
+      if (!f.hour) { toast('Nhập giờ đón.', 'warn'); return; }
+      const r = await api(code ? 'trip_update' : 'trip_create', code ? { code, fields: f } : { fields: f });
+      if (r) { merge(r); toast(code ? 'Đã lưu chuyến' : 'Đã tạo chuyến ' + r.trip.code, 'ok'); d.close(); }
+    } else if (b.dataset.act === 'cancel-trip') {
+      if (!confirm('Hủy chuyến ' + code + '? (chỉ hủy được khi chuyến không còn khách)')) return;
+      const r = await api('trip_cancel', { code });
+      if (r) { merge(r); toast('Đã hủy chuyến', 'ok'); d.close(); }
+    }
+  } finally { b.disabled = false; }
+});
+
+/* ---------- vé có QR (để chụp màn hình gửi khách) ---------- */
+function ticketUrl(code) { return location.origin + location.pathname + '?t=' + encodeURIComponent(code); }
+function openQr(code) {
+  const t = findT(code);
+  if (!t) return;
+  const qr = qrcode(0, 'M');
+  qr.addData(ticketUrl(t.code));
+  qr.make();
+  const d = $('#dlg-qr');
+  d.style.width = '420px';
+  d.innerHTML = '<div class="dh hero"><h2>Vé của khách</h2><button class="btn sm" data-close type="button">✕</button></div><div class="db">'
+    + '<p class="meta" style="margin-top:0">Chụp màn hình thẻ vé bên dưới rồi gửi khách qua Zalo. Thẻ không có thông tin thanh toán.</p>'
+    + '<div class="ticket"><div class="th"><span class="logo"><img src="logo.png" alt="Origo" onerror="this.parentNode.textContent=\'Origo\'"></span><b>Vé xe sân bay Origo</b></div><div class="tb">'
+    + '<h3>' + esc(t.name) + '</h3><div class="route">Sân bay Cam Ranh → Nha Trang · ' + t.people + ' người</div>'
+    + '<div class="qr">' + qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true }) + '</div><div class="code">' + esc(t.code) + '</div>'
+    + '<dl class="info"><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + '</dd><dt>Hạ cánh</dt><dd>' + esc(t.hour) + ' · ' + esc(t.date.split('-').reverse().join('/')) + '</dd></dl>'
+    + '<div class="foot">Đưa mã QR này cho nhân viên Origo khi gặp ở sân bay. Hotline ' + HOTLINE + '</div></div></div></div>'
+    + '<div class="df"><button class="btn pri" data-close type="button">Xong</button></div>';
+  d.showModal();
+}
+$('#dlg-qr').addEventListener('click', (e) => { if (e.target.closest('[data-close]')) e.currentTarget.close(); });
+
+/* ---------- thẻ nhanh (nhân viên sân bay, điện thoại) ---------- */
+function openQuick(code) {
+  const t = findT(code);
+  if (!t) return;
+  const d = $('#dlg-quick');
+  const released = t.status === ST.OK && t.releasedTrip; // vừa bị hủy chuyến: cho khôi phục nếu bấm nhầm
+  const notice = t.status === ST.CANCEL ? '<div class="notebox"><b>Vé đã hủy</b></div>'
+    : released ? '<div class="notebox"><b>Đã hủy chuyến ' + esc(t.releasedTrip) + '</b><div class="meta">' + esc(t.releaseReason) + '</div><button class="btn pri" data-act="rejoin">Khôi phục vào chuyến ' + esc(t.releasedTrip) + '</button></div>'
+    : t.status === ST.NEW || t.status === ST.OK ? '<div class="notebox"><b>Chưa xếp vào chuyến nào</b><div class="meta" style="margin:0">Báo vận hành nếu cần.</div></div>' : '';
+  const inTripNow = t.status === ST.ASSIGNED || t.status === ST.PICKED;
+  d.innerHTML =
+    '<div class="dh hero"><div style="flex:1;min-width:0"><h2>' + esc(t.name) + '</h2><small>' + esc(t.code) + '</small></div><span class="chip">' + esc(t.status) + '</span><button class="btn sm" data-close type="button">✕</button></div><div class="db"><div class="stack">'
+    + notice
+    + '<dl class="kv"><dt>Số người</dt><dd><b>' + t.people + '</b></dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + ' · ' + esc(t.hour) + ' ' + fmtD(t.date) + (t.origin ? ' · từ ' + esc(t.origin) : '') + '</dd><dt>Điện thoại</dt><dd><a href="tel:' + esc(t.phone.replace(/[^\d+]/g, '')) + '">' + esc(t.phone) + '</a></dd><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd>' + (t.note ? '<dt>Ghi chú</dt><dd>' + esc(t.note) + '</dd>' : '') + '</dl>'
+    + payCtl(t, true)
+    + (inTripNow ? pickCtl(t, true) : '')
+    + (t.status === ST.ASSIGNED ? '<button class="btn line bad" data-act="release">Hủy chuyến của khách (không gọi được…)</button>' : '')
+    + '</div></div>';
+  d.dataset.code = code;
+  if (!d.open) d.showModal();
+}
+$('#dlg-quick').addEventListener('click', async (e) => {
+  const d = e.currentTarget;
+  if (e.target.closest('[data-close]')) { d.close(); return; }
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const t = findT(d.dataset.code);
+  if (!t) return;
+  b.disabled = true;
+  try {
+    const a = b.dataset.act;
+    if (a === 'pick') await doPickup(t);
+    else if (a === 'unpick') await doPickup(t, true);
+    else if (a === 'pay') await doPay(t, true);
+    else if (a === 'unpay') await doPay(t, false);
+    else if (a === 'rejoin') await doRejoin(t);
+    else if (a === 'release') { const r = await doRelease(t); if (r) { d.close(); return; } }
+    openQuick(t.code);
+  } finally { b.disabled = false; }
+});
+/* ---------- quét QR bằng camera (trang chạy HTTPS nên được dùng camera) ---------- */
+let scanStream = null, scanTimer = 0, scanCanvas = null;
+function parseCode(text) {
+  text = String(text || '').trim();
+  let m = text.match(/[?&]t=([A-Za-z0-9-]+)/);
+  if (m) return m[1].toUpperCase();
+  m = text.match(/\bOG-[A-Z0-9]{6}\b/i);
+  return m ? m[0].toUpperCase() : '';
+}
+function scanDecode(data, w, h) { const r = window.jsQR && jsQR(data, w, h, { inversionAttempts: 'dontInvert' }); return r && r.data ? r.data : ''; }
+function stopScan() {
+  clearTimeout(scanTimer);
+  if (scanStream) { scanStream.getTracks().forEach((t) => t.stop()); scanStream = null; }
+}
+function openScan() {
+  const d = $('#dlg-scan');
+  d.style.width = '440px';
+  d.innerHTML = '<div class="dh hero"><h2>Quét mã QR trên vé</h2><button class="btn sm" data-close type="button">✕</button></div><div class="db">'
+    + '<div class="scanbox"><video id="scan-v" playsinline muted></video><div class="frame"></div></div>'
+    + '<p class="meta" id="scan-msg" style="margin:0 0 12px">Đưa mã QR của khách vào khung.</p>'
+    + '<label for="scan-code">Hoặc nhập mã vé</label><div class="payrow"><input id="scan-code" placeholder="OG-XXXXXX" autocapitalize="characters" style="flex:1;text-transform:uppercase"><button class="btn pri" id="scan-go" type="button">Tra</button></div></div>';
+  d.showModal();
+  const go = (text) => { const code = parseCode(text) || String(text || '').trim().toUpperCase(); if (!code) return; stopScan(); d.close(); openByCode(code); };
+  $('#scan-go', d).addEventListener('click', () => go($('#scan-code', d).value));
+  $('#scan-code', d).addEventListener('keydown', (e) => { if (e.key === 'Enter') go(e.target.value); });
+  const msg = (t) => { const m = $('#scan-msg', d); if (m) m.textContent = t; };
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { msg('Trình duyệt không mở được camera. Hãy nhập mã vé bên dưới.'); return; }
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then((stream) => {
+    if (!d.open) { stream.getTracks().forEach((t) => t.stop()); return; }
+    scanStream = stream;
+    const v = $('#scan-v', d);
+    v.srcObject = stream;
+    v.play().catch(() => {});
+    const tick = () => {
+      if (!scanStream) return;
+      if (v.readyState >= 2 && v.videoWidth) {
+        const w = Math.min(v.videoWidth, 640), h = Math.round((v.videoHeight * w) / v.videoWidth);
+        scanCanvas = scanCanvas || document.createElement('canvas');
+        scanCanvas.width = w; scanCanvas.height = h;
+        const ctx = scanCanvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(v, 0, 0, w, h);
+        const text = scanDecode(ctx.getImageData(0, 0, w, h).data, w, h);
+        if (text) { const code = parseCode(text); if (code) { go(code); return; } msg('Mã QR này không phải vé Origo.'); }
+      }
+      scanTimer = setTimeout(tick, 160);
+    };
+    tick();
+  }).catch(() => msg('Chưa mở được camera (chưa cho phép hoặc máy không có). Hãy nhập mã vé bên dưới.'));
+}
+$('#btn-scan').addEventListener('click', openScan);
+$('#dlg-scan').addEventListener('click', (e) => { if (e.target.closest('[data-close]')) e.currentTarget.close(); });
+$('#dlg-scan').addEventListener('close', stopScan);
+// đóng popup thì bỏ ?t= khỏi địa chỉ
+// bấm ra ngoài popup (vùng nền) thì đóng
+document.querySelectorAll('dialog').forEach((d) => d.addEventListener('mousedown', (e) => { if (e.target === d && d.id !== 'dlg-ask') d.close(); }));
+
+/* =====================================================================================
+   CHẾ ĐỘ DEMO: máy chủ giả trong trình duyệt (localStorage), cùng cách trả lời như Apps Script
+   ===================================================================================== */
+function demoDb() {
+  let db = null;
+  try { db = JSON.parse(localStorage.getItem('origo_demo_db') || 'null'); } catch (e) {}
+  if (db && db.day === localToday()) return db;
+  const t = localToday(), tm = addDays(t, 1), md = (iso) => iso.slice(8, 10) + iso.slice(5, 7);
+  const mk = (o) => Object.assign({ email: 'khach@example.com', origin: 'Hà Nội', lang: 'vi', note: '', pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', trip: '', time: '15/11/2026 08:00:00', date: t }, o, { total: o.people * 80000 });
+  db = {
+    day: t,
+    trips: [
+      { code: md(t) + '-4821', status: 'Hoạt động', date: t, hour: '14:50', capacity: 16, driver: 'Anh Hùng', driverPhone: '0905 111 222', plate: '79A-123.45', note: '' },
+      { code: md(t) + '-7302', status: 'Hoạt động', date: t, hour: '18:20', capacity: 29, driver: '', driverPhone: '', plate: '', note: '' },
+    ],
+    tickets: [
+      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
+      mk({ code: 'OG-R4T9WE', status: ST.ASSIGNED, name: 'Trần Thị Bích', phone: '0912 000 111', people: 4, flight: 'VN1546', hour: '14:40', trip: md(t) + '-4821', origin: 'TP.HCM' }),
+      mk({ code: 'OG-H2D5NQ', status: ST.PICKED, name: 'Lê Hoàng', phone: '0933 777 888', people: 2, flight: 'VJ123', hour: '14:35', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Sân bay 1, 15/11 14:55', pickedAt: '15/11/2026 14:57:00', pickedBy: 'Nhân viên sân bay 1' }),
+      mk({ code: 'OG-M8Y3CF', status: ST.ASSIGNED, name: 'Phạm Quốc Dũng', phone: '0977 321 654', people: 6, flight: 'QH202', hour: '18:05', trip: md(t) + '-7302', origin: 'Đà Nẵng' }),
+      mk({ code: 'OG-B6J9AS', status: ST.OK, name: 'Võ Minh Châu', phone: '0968 555 444', people: 2, flight: 'VN7120', hour: '17:50', origin: 'Hải Phòng', releaseReason: 'Không liên lạc được (Nhân viên sân bay 1, 15/11 12:00)', releasedTrip: md(t) + '-7302' }),
+      mk({ code: 'OG-P3E7ZU', status: ST.OK, name: 'Đặng Thu Hà', phone: '0944 100 200', people: 1, flight: 'VJ611', hour: '19:10', origin: 'Hà Nội' }),
+      mk({ code: 'OG-W5N2LT', status: ST.NEW, name: 'John Smith', phone: '+82 10 1234 5678', people: 2, flight: 'KE471', hour: '20:15', origin: 'Seoul', email: 'john@example.com', lang: 'en' }),
+      mk({ code: 'OG-Q9X4VD', status: ST.NEW, name: 'Иван Петров', phone: '+7 900 123-45-67', people: 5, flight: 'SU290', hour: '21:30', origin: 'Moscow', lang: 'ru', date: tm }),
+      mk({ code: 'OG-A1B2CD', status: ST.CANCEL, name: 'Nguyễn Văn A', phone: '0901 222 333', people: 2, flight: 'VJ125', hour: '15:20', pay: PAYYES, payBy: 'Vận hành 1, 14/11 16:00', note: 'Hủy: khách đổi lịch' }),
+      mk({ code: 'OG-D2F8GH', status: ST.CANCEL, name: 'Hoàng Gia Bảo', phone: '0988 222 333', people: 3, flight: 'VJ129', hour: '16:00', note: 'Hủy: khách đổi ý' }),
+    ],
+  };
+  return db;
+}
+async function demoApi(action, d) {
+  await new Promise((r) => setTimeout(r, 180));
+  const db = demoDb();
+  const save = () => localStorage.setItem('origo_demo_db', JSON.stringify(db));
+  const err = (error, message) => ({ ok: false, error, message });
+  if (action === 'login') {
+    const u = (d.user || '').toLowerCase();
+    if (d.pin !== '123456' || (u !== 'demo-vh' && u !== 'demo-sb')) return err('bad_login');
+    return { ok: true, token: 'demo-token-' + u + '-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', name: u === 'demo-vh' ? 'Vận hành 1' : 'Nhân viên sân bay 1', role: u === 'demo-vh' ? OPS : AIR };
+  }
+  if (!d.token || String(d.token).indexOf('demo-token-') !== 0) return err('auth');
+  const role = d.token.indexOf('demo-vh') > 0 ? OPS : AIR;
+  const who = role === OPS ? 'Vận hành 1' : 'Nhân viên sân bay 1';
+  const now = () => { const x = new Date(); return pad(x.getDate()) + '/' + pad(x.getMonth() + 1) + ' ' + pad(x.getHours()) + ':' + pad(x.getMinutes()); };
+  const tk = () => { const t = db.tickets.find((x) => x.code === String(d.code || '').toUpperCase()); if (!t) throw err('not_found', 'Không tìm thấy vé'); return t; };
+  const used = (c) => db.tickets.filter((x) => x.trip === c && (x.status === ST.ASSIGNED || x.status === ST.PICKED)).reduce((n, x) => n + x.people, 0);
+  const cl = (t) => Object.assign({}, t);
+  try {
+    if (action === 'me') return { ok: true, name: who, role };
+    if (action === 'logout') return { ok: true };
+    if (action === 'board') {
+      const air = d.view === 'air', td = localToday(), day = air ? td : d.date || td, from = air ? addDays(td, -1) : day, to = air ? addDays(td, 1) : day;
+      const trips = db.trips.filter((t) => t.status !== 'Đã hủy' && t.date >= from && t.date <= to);
+      const codes = trips.map((t) => t.code);
+      const inT = (t) => codes.includes(t.trip) && (t.status === ST.ASSIGNED || t.status === ST.PICKED);
+      const rel = (t) => t.status === ST.OK && t.releasedTrip && codes.includes(t.releasedTrip);
+      const tickets = db.tickets.filter((t) => (air ? inT(t) || rel(t) : t.status === ST.NEW || inT(t) || t.date === day || ((t.status === ST.OK || t.status === ST.CANCEL) && t.date >= addDays(td, -1)))).map(cl);
+      return { ok: true, today: td, date: day, view: air ? 'air' : 'ops', role, price: 80000, trips, tickets };
+    }
+    if (action === 'ticket') { const t = tk(); return { ok: true, ticket: cl(t), trip: db.trips.find((x) => x.code === t.trip) || null }; }
+    if (action === 'ticket_update') {
+      const t = tk(), f = d.fields || {};
+      ['name', 'phone', 'email', 'origin', 'note', 'date', 'hour'].forEach((k) => { if (k in f) t[k] = String(f[k]); });
+      if ('flight' in f) { const v = String(f.flight).toUpperCase().replace(/[^A-Z0-9]/g, ''); if (!/^[A-Z0-9]{2}\d{1,4}[A-Z]?$/.test(v)) return err('invalid', 'Mã chuyến bay chưa đúng'); t.flight = v; }
+      if ('people' in f) { t.people = Number(f.people); if (!('total' in f)) t.total = t.people * 80000; }
+      if ('total' in f) t.total = Number(f.total);
+      save();
+      const warn = []; if (t.trip && used(t.trip) > db.trips.find((x) => x.code === t.trip).capacity) warn.push('Chuyến ' + t.trip + ' đang vượt sức chứa');
+      return { ok: true, ticket: cl(t), warn };
+    }
+    if (action === 'ticket_confirm') { const t = tk(); if (t.status === ST.CANCEL) { const m = (t.note.match(/khỏi chuyến (\d{4}-\d{4})/g) || []).pop(); t.note = (t.note ? t.note + ' | ' : '') + 'Khôi phục ' + now() + (m ? ' (chuyến cũ ' + m.replace('khỏi chuyến ', '') + ' đã hủy)' : ''); } if (t.status === ST.NEW || t.status === ST.CANCEL) t.status = ST.OK; save(); return { ok: true, ticket: cl(t) }; }
+    if (action === 'ticket_cancel') { const t = tk(); if (t.status === ST.PICKED) return err('picked', 'Khách đã được đón, không hủy được.'); t.note = (t.note ? t.note + ' | ' : '') + 'Hủy ' + now() + (t.trip ? ' khỏi chuyến ' + t.trip : '') + (d.reason ? ': ' + d.reason : ''); t.status = ST.CANCEL; t.trip = ''; t.releasedTrip = ''; save(); return { ok: true, ticket: cl(t) }; }
+    if (action === 'ticket_assign') {
+      const t = tk(), tr = db.trips.find((x) => x.code === d.trip && x.status !== 'Đã hủy');
+      if (t.status === ST.NEW) return err('need_confirm', 'Cần xác nhận với khách (nút Xác nhận) trước khi xếp chuyến.');
+      if (t.status === ST.PICKED) return err('picked', 'Khách đã được đón.');
+      if (!tr) return err('not_found', 'Không tìm thấy chuyến');
+      if (t.status === ST.CANCEL) { const m = (t.note.match(/khỏi chuyến (\d{4}-\d{4})/g) || []).pop(); t.note = (t.note ? t.note + ' | ' : '') + 'Xếp lại ' + now() + ' vào chuyến ' + tr.code + (m ? ' (chuyến cũ ' + m.replace('khỏi chuyến ', '') + ' đã hủy)' : ''); }
+      t.status = ST.ASSIGNED; t.trip = tr.code; t.releaseReason = ''; t.releasedTrip = '';
+      const warn = []; if (used(tr.code) > tr.capacity) warn.push('Chuyến ' + tr.code + ' đang ' + used(tr.code) + '/' + tr.capacity + ' người (vượt sức chứa)'); if (tr.date !== t.date) warn.push('Khách hạ cánh ngày ' + t.date + ' nhưng chuyến chạy ngày ' + tr.date);
+      save(); return { ok: true, ticket: cl(t), warn };
+    }
+    if (action === 'ticket_release') {
+      const t = tk(), reason = String(d.reason || '').trim();
+      if (reason.length < 2) return err('reason', 'Cần ghi lý do hủy chuyến.');
+      if (t.status !== ST.ASSIGNED) return err('not_assigned', 'Vé này chưa nằm trong chuyến nào.');
+      t.releasedTrip = t.trip; t.status = ST.OK; t.trip = ''; t.releaseReason = reason + ' (' + who + ', ' + now() + ')'; save(); return { ok: true, ticket: cl(t) };
+    }
+    if (action === 'ticket_rejoin') {
+      const t = tk(), tr = db.trips.find((x) => x.code === t.releasedTrip && x.status !== 'Đã hủy');
+      if (t.status !== ST.OK || !t.releasedTrip || !tr) return err('not_released', 'Vé này không có chuyến vừa hủy để khôi phục.');
+      t.status = ST.ASSIGNED; t.trip = tr.code; t.releasedTrip = ''; t.releaseReason = ''; save(); return { ok: true, ticket: cl(t) };
+    }
+    if (action === 'ticket_pickup') {
+      const t = tk();
+      if (d.undo) { if (t.status === ST.PICKED) { t.status = t.trip ? ST.ASSIGNED : ST.OK; t.pickedAt = ''; t.pickedBy = ''; } }
+      else { if (t.status === ST.CANCEL) return err('cancelled', 'Vé này đã hủy.'); if (t.status !== ST.PICKED) { t.status = ST.PICKED; t.pickedAt = now(); t.pickedBy = who; } }
+      save(); return { ok: true, ticket: cl(t) };
+    }
+    if (action === 'ticket_pay') {
+      const t = tk();
+      if (d.paid === false) { t.pay = 'Chưa thanh toán'; t.payBy = 'Bỏ đánh dấu: ' + who + ', ' + now(); }
+      else { t.pay = PAYYES; t.payBy = who + ', ' + now(); }
+      save(); return { ok: true, ticket: cl(t) };
+    }
+    if (action === 'trip_create' || action === 'trip_update') {
+      const f = d.fields || {};
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(f.date || '') || !/^\d{2}:\d{2}$/.test(f.hour || '') || !(f.capacity >= 1 && f.capacity <= 60)) return err('invalid', 'Ngày, giờ hoặc sức chứa chưa đúng');
+      let tr;
+      if (action === 'trip_create') { tr = { code: f.date.slice(8, 10) + f.date.slice(5, 7) + '-' + (1000 + Math.floor(Math.random() * 9000)), status: 'Hoạt động' }; db.trips.push(tr); }
+      else tr = db.trips.find((x) => x.code === d.code);
+      Object.assign(tr, { date: f.date, hour: f.hour, capacity: Number(f.capacity), driver: f.driver || '', driverPhone: f.driverPhone || '', plate: f.plate || '', note: f.note || '' });
+      save(); return { ok: true, trip: tr, warn: used(tr.code) > tr.capacity ? ['Chuyến đang vượt sức chứa'] : [] };
+    }
+    if (action === 'trip_cancel') {
+      const tr = db.trips.find((x) => x.code === d.code);
+      if (used(d.code) > 0) return err('not_empty', 'Chuyến còn khách. Chuyển hoặc hủy chuyến của hết khách trước khi hủy chuyến xe.');
+      tr.status = 'Đã hủy'; save(); return { ok: true, trip: tr };
+    }
+  } catch (e) { if (e && e.ok === false) return e; throw e; }
+  return err('unknown');
+}
+
+/* ---------------- vào trang ---------------- */
+if (session && session.token) startApp(); else showLogin('');
+</script>
+</body>
+</html>
