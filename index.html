@@ -692,7 +692,9 @@ function openTicket(code, msg) {
   };
   d.querySelectorAll('input,textarea').forEach((el) => el.addEventListener('input', refresh));
   $('#f-trip', d).addEventListener('change', refresh);
-  if (msg) setTimeout(() => { const f = $('#flash', d); if (f && d.dataset.code === code) f.textContent = ''; }, 4000);
+  // Mỗi lần vẽ lại popup thì hủy hẹn giờ cũ: máy chủ thật chậm vài giây, hẹn giờ của thông báo trước có thể xóa mất thông báo mới
+  clearTimeout(d._flashTimer);
+  if (msg) d._flashTimer = setTimeout(() => { const f = $('#flash', d); if (f) f.textContent = ''; }, 5000);
 }
 function ticketFields(d, t) {
   const v = (id) => $('#' + id, d).value;
