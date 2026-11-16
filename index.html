@@ -66,6 +66,7 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin:0
 .bar .fld{min-width:150px}
 .bar .btns{display:flex;gap:8px;flex-wrap:wrap}
 .newsum{font-size:.82rem;color:var(--muted);margin:8px 0 0}.newsum b{color:var(--ink)}
+.airbar{margin-bottom:8px}.airbar label{display:block;margin-bottom:4px}
 .daynav{display:flex;gap:6px;align-items:center}.daynav input{width:auto}.trips-h{margin:0 0 9px;font-size:1.02rem}
 .trips{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 .trip{background:linear-gradient(180deg,#fff,#fbfaff);border-radius:16px;padding:10px;border:1px solid rgba(16,12,64,.06);box-shadow:var(--sh1);display:flex;flex-direction:column;gap:7px;transition:box-shadow .15s}
@@ -240,6 +241,7 @@ dialog .df .flash{flex-basis:100%;margin:0 0 2px}
 
   <!-- SÂN BAY (điện thoại) -->
   <div id="air" class="air" hidden>
+    <div class="airbar"><label for="aday">Ngày xem (ngày chuyến chạy)</label><div class="daynav"><button class="btn sm" id="aday-prev" type="button" title="Ngày trước">‹</button><input id="aday" type="date"><button class="btn sm" id="aday-next" type="button" title="Ngày sau">›</button><button class="btn sm line" id="aday-today" type="button">Hôm nay</button></div></div>
     <input id="qa" type="search" placeholder="Tìm tên, số điện thoại, mã vé…" style="margin-bottom:4px">
     <div id="air-list"></div>
   </div>
@@ -301,7 +303,7 @@ const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDa
 
 let session = null;
 try { session = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) {}
-const S = { role: '', name: '', trips: [], tickets: [], today: localToday(), date: localToday(), view: 'ops', qs: { new: '', free: '', cancel: '' }, tripOpen: {}, tiers: null, loaded: false };
+const S = { role: '', name: '', trips: [], tickets: [], today: localToday(), date: localToday(), view: 'ops', qs: { new: '', free: '', cancel: '' }, tripOpen: {}, airDate: localToday(), tiers: null, loaded: false };
 
 /* ---------------- gọi máy chủ ---------------- */
 async function rawApi(action, data) {
@@ -446,10 +448,11 @@ async function startApp() {
   startPoll();
 }
 async function loadBoard(silent) {
-  const r = await api('board', S.view === 'ops' ? { view: 'ops', date: S.date } : { view: 'air' }, { silent });
+  const r = await api('board', S.view === 'ops' ? { view: 'ops', date: S.date } : { view: 'air', date: S.airDate }, { silent });
   if (!r) return;
   S.trips = r.trips; S.tickets = r.tickets; S.tiers = r.tiers || S.tiers; S.today = r.today; S.loaded = true;
   if (S.view === 'ops' && r.date) { S.date = r.date; $('#day').value = r.date; }
+  if (S.view === 'air' && r.date) { S.airDate = r.date; $('#aday').value = r.date; }
   render();
 }
 let pollTimer = null;
@@ -538,21 +541,20 @@ function renderAir() {
   const q = $('#qa').value.trim().toLowerCase();
   const hit = (t) => !q || [t.name, t.phone, t.code, t.flight].join(' ').toLowerCase().includes(q);
   const trips = S.trips.slice().sort((a, b) => (a.date + a.hour).localeCompare(b.date + b.hour));
-  let html = '', lastDay = '';
+  let html = '<h2 class="trips-h">Chuyến ngày ' + fmtD(S.airDate) + (S.airDate === S.today ? ' (hôm nay)' : '') + '</h2>';
   trips.forEach((tr) => {
     const all = S.tickets.filter((t) => t.trip === tr.code && inTrip(t)).sort(byFlight);
     // khách vừa bị hủy chuyến: vẫn hiện (mờ, có chữ "Đã hủy chuyến") để khôi phục lại nếu bấm nhầm
     const rel = S.tickets.filter((t) => t.status === ST.OK && t.releasedTrip === tr.code).sort(byFlight);
     const list = all.filter(hit), relList = rel.filter(hit);
     if (q && !list.length && !relList.length) return;
-    if (tr.date !== lastDay) { lastDay = tr.date; html += '<div class="day">' + (tr.date === S.today ? 'Hôm nay' : tr.date < S.today ? 'Hôm qua' : 'Ngày mai') + ' · ' + fmtD(tr.date) + '</div>'; }
     const used = all.reduce((n, t) => n + t.people, 0);
     const picked = all.filter((t) => t.status === ST.PICKED).length;
-    const open = (S.tripOpen[tr.code] !== undefined ? S.tripOpen[tr.code] : q || tr.date === S.today) ? ' open' : ''; // nhân viên tự mở/gập thì nhớ, vẽ lại (tự tải lại, sau mỗi thao tác) không gập mất
+    const open = (S.tripOpen[tr.code] !== undefined ? S.tripOpen[tr.code] : true) ? ' open' : ''; // nhân viên tự mở/gập thì nhớ, vẽ lại (tự tải lại, sau mỗi thao tác) không gập mất
     html += '<details' + open + ' data-trip="' + esc(tr.code) + '"><summary><b>' + esc(tr.hour) + '</b><span class="meta">' + esc(tr.code) + (tr.plate ? ' · ' + esc(tr.plate) : '') + (tr.driver ? ' · ' + esc(tr.driver) : '') + '</span><span class="chip ' + (picked === all.length && all.length ? 'ok' : 'blue') + '" style="margin-left:auto">' + picked + '/' + all.length + ' đã đón · ' + used + ' người</span></summary><div class="list">'
       + (list.length || relList.length ? list.map((t) => tkHtml(t, { air: true })).join('') + relList.map((t) => tkHtml(t, { air: true })).join('') : '<div class="empty">Chưa có khách trong chuyến</div>') + '</div></details>';
   });
-  if (!html) html = '<p class="empty">' + (q ? 'Không thấy khách nào khớp.' : 'Chưa có chuyến nào cho hôm nay và ngày mai.') + '</p>';
+  if (html.indexOf('<details') < 0) html += '<p class="empty">' + (q ? 'Không thấy khách nào khớp.' : 'Chưa có chuyến nào ngày ' + fmtD(S.airDate) + '.') + '</p>';
   if (/^OG-[A-Z0-9]{3,}/i.test($('#qa').value.trim()) && !S.tickets.some((t) => t.code === $('#qa').value.trim().toUpperCase())) {
     html = '<button class="btn pri lg" type="button" data-lookup="' + esc($('#qa').value.trim().toUpperCase()) + '" style="margin:8px 0">Tra mã vé ' + esc($('#qa').value.trim().toUpperCase()) + '</button>' + html;
   }
@@ -573,6 +575,11 @@ $('#day').addEventListener('change', (e) => goDay(e.target.value));
 $('#day-prev').addEventListener('click', () => goDay(addDays(S.date, -1)));
 $('#day-next').addEventListener('click', () => goDay(addDays(S.date, 1)));
 $('#day-today').addEventListener('click', () => goDay(localToday()));
+function goAirDay(iso) { if (!iso) return; S.airDate = iso; $('#aday').value = iso; loadBoard(); }
+$('#aday').addEventListener('change', (e) => goAirDay(e.target.value));
+$('#aday-prev').addEventListener('click', () => goAirDay(addDays(S.airDate, -1)));
+$('#aday-next').addEventListener('click', () => goAirDay(addDays(S.airDate, 1)));
+$('#aday-today').addEventListener('click', () => goAirDay(localToday()));
 $('#btn-newtrip').addEventListener('click', () => openTrip(null));
 $('#btn-newtick').addEventListener('click', () => openNew());
 document.addEventListener('click', (e) => {
@@ -1060,7 +1067,7 @@ async function demoApi(action, d) {
     if (action === 'me') return { ok: true, name: who, role };
     if (action === 'logout') return { ok: true };
     if (action === 'board') {
-      const air = d.view === 'air', td = localToday(), day = air ? td : d.date || td, from = air ? addDays(td, -1) : day, to = air ? addDays(td, 1) : day;
+      const air = d.view === 'air', td = localToday(), day = d.date || td, from = day, to = day;
       const trips = db.trips.filter((t) => t.status !== 'Đã hủy' && t.date >= from && t.date <= to);
       const codes = trips.map((t) => t.code);
       const inT = (t) => codes.includes(t.trip) && (t.status === ST.ASSIGNED || t.status === ST.PICKED);
