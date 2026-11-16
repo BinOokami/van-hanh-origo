@@ -4,7 +4,7 @@ Trang dành cho nhân viên Origo, gồm một file `index.html` tĩnh. Nhân vi
 
 - Có hai màn: **Vận hành** (xếp chuyến, kéo thả, sửa vé, lấy vé QR) và **Sân bay** (xác nhận đã đón, thanh toán, hủy chuyến của khách). Chuyển màn bằng nút ở góc phải. Ai đăng nhập cũng dùng được cả hai màn.
 - Xem thử không cần máy chủ: thêm `?demo=1` vào địa chỉ. Tài khoản demo là `demo-vh` hoặc `demo-sb`, PIN `123456`. Dữ liệu giả chỉ lưu trong trình duyệt.
-- Mở thẳng một vé: thêm `?t=<mã vé>` vào địa chỉ. Mã QR trên vé trỏ về địa chỉ này.
+- Mở thẳng một vé: thêm `?t=<mã vé>` vào địa chỉ. Mã QR trên vé chỉ chứa mã vé (không có địa chỉ trang): khách quét bằng camera thường chỉ thấy mã, nhân viên quét bằng nút “Quét QR” trong trang. Trang vẫn đọc được QR cũ có địa chỉ.
 - Địa chỉ Apps Script nằm ở hằng `API_URL`, đầu đoạn script trong `index.html`.
 
 ## Chạy trên máy

@@ -297,7 +297,7 @@ const addDays = (iso, n) => { const d = new Date(iso + 'T00:00:00Z'); d.setUTCDa
 
 let session = null;
 try { session = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) {}
-const S = { role: '', name: '', trips: [], tickets: [], today: localToday(), date: localToday(), view: 'ops', qs: { new: '', free: '', cancel: '' }, price: 80000, loaded: false };
+const S = { role: '', name: '', trips: [], tickets: [], today: localToday(), date: localToday(), view: 'ops', qs: { new: '', free: '', cancel: '' }, tripOpen: {}, price: 80000, loaded: false };
 
 /* ---------------- gọi máy chủ ---------------- */
 async function rawApi(action, data) {
@@ -544,7 +544,7 @@ function renderAir() {
     if (tr.date !== lastDay) { lastDay = tr.date; html += '<div class="day">' + (tr.date === S.today ? 'Hôm nay' : tr.date < S.today ? 'Hôm qua' : 'Ngày mai') + ' · ' + fmtD(tr.date) + '</div>'; }
     const used = all.reduce((n, t) => n + t.people, 0);
     const picked = all.filter((t) => t.status === ST.PICKED).length;
-    const open = q || tr.date === S.today ? ' open' : '';
+    const open = (S.tripOpen[tr.code] !== undefined ? S.tripOpen[tr.code] : q || tr.date === S.today) ? ' open' : ''; // nhân viên tự mở/gập thì nhớ, vẽ lại (tự tải lại, sau mỗi thao tác) không gập mất
     html += '<details' + open + ' data-trip="' + esc(tr.code) + '"><summary><b>' + esc(tr.hour) + '</b><span class="meta">' + esc(tr.code) + (tr.plate ? ' · ' + esc(tr.plate) : '') + (tr.driver ? ' · ' + esc(tr.driver) : '') + '</span><span class="chip ' + (picked === all.length && all.length ? 'ok' : 'blue') + '" style="margin-left:auto">' + picked + '/' + all.length + ' đã đón · ' + used + ' người</span></summary><div class="list">'
       + (list.length || relList.length ? list.map((t) => tkHtml(t, { air: true })).join('') + relList.map((t) => tkHtml(t, { air: true })).join('') : '<div class="empty">Chưa có khách trong chuyến</div>') + '</div></details>';
   });
@@ -555,6 +555,12 @@ function renderAir() {
   $('#air-list').innerHTML = html;
 }
 $('#qa').addEventListener('input', renderAir);
+// Nhớ chuyến nhân viên tự mở hoặc gập (chỉ khi bấm thật, không ghi đè mặc định "hôm nay mở sẵn")
+$('#air-list').addEventListener('click', (e) => {
+  const sm = e.target.closest('summary');
+  const dt = sm && sm.parentElement;
+  if (dt && dt.dataset.trip) setTimeout(() => { S.tripOpen[dt.dataset.trip] = dt.open; }, 0);
+});
 
 /* ---------------- sự kiện bảng vận hành ---------------- */
 document.querySelectorAll('.zs').forEach((i) => i.addEventListener('input', () => { S.qs[i.dataset.zq] = i.value; renderOps(); }));
@@ -883,12 +889,11 @@ $('#dlg-trip').addEventListener('click', async (e) => {
 });
 
 /* ---------- vé có QR (để chụp màn hình gửi khách) ---------- */
-function ticketUrl(code) { return location.origin + location.pathname + '?t=' + encodeURIComponent(code); }
 function openQr(code) {
   const t = findT(code);
   if (!t) return;
   const qr = qrcode(0, 'M');
-  qr.addData(ticketUrl(t.code));
+  qr.addData(t.code); // chỉ mã vé, không kèm địa chỉ trang: khách quét bằng camera thường chỉ thấy mã, nhân viên quét bằng nút “Quét QR” trong trang này
   qr.make();
   const d = $('#dlg-qr');
   d.style.width = '420px';
