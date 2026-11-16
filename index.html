@@ -64,6 +64,8 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin:0
 .empty{color:var(--muted);font-size:.8rem;text-align:center;padding:9px 6px;border:1.5px dashed var(--line);border-radius:10px}
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:10px}
 .bar .fld{min-width:150px}
+.bar .btns{display:flex;gap:8px;flex-wrap:wrap}
+.newsum{font-size:.82rem;color:var(--muted);margin:8px 0 0}.newsum b{color:var(--ink)}
 .daynav{display:flex;gap:6px;align-items:center}.daynav input{width:auto}.trips-h{margin:0 0 9px;font-size:1.02rem}
 .trips{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 .trip{background:linear-gradient(180deg,#fff,#fbfaff);border-radius:16px;padding:10px;border:1px solid rgba(16,12,64,.06);box-shadow:var(--sh1);display:flex;flex-direction:column;gap:7px;transition:box-shadow .15s}
@@ -80,7 +82,8 @@ label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin:0
 .tk:hover{transform:translateY(-1px);box-shadow:0 2px 4px rgba(16,12,64,.08),0 8px 18px rgba(16,12,64,.12)}
 .tk[draggable=true]{cursor:grab}.tk.dragging{opacity:.4}
 .tk .l1{display:flex;align-items:center;gap:6px}.tk .l1 b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.88rem}
-.tk .l2{font-size:.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk .l2,.tk .l3{font-size:.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk .l3{color:var(--purple-dark);font-weight:600}
 .tk.picked{background:linear-gradient(#f3fdf6,#e8faee);border-color:#bde8c9}
 .tk.cancel{background:#f6f6f7;color:#71717a}.tk.cancel b{text-decoration:line-through}
 .pay{flex:none;width:22px;height:22px;display:block}.pay svg{width:100%;height:100%;display:block}
@@ -109,6 +112,7 @@ dialog.sheet{width:520px}
 .ticket .tb{padding:14px 16px;text-align:center}
 .ticket h3{margin:0;font-size:1.25rem}.ticket .route{color:var(--muted);margin:2px 0 10px;font-size:.9rem}
 .ticket .info{text-align:left;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:.92rem;margin:10px 0}.ticket .info dt{color:var(--muted)}.ticket .info dd{margin:0;font-weight:600}
+.ticket .info .wide{grid-column:1/-1}.ticket .info dt.wide{margin-top:2px;margin-bottom:-2px}.ticket .info dd.wide{font-size:.76rem;line-height:1.35;text-wrap:balance}
 .ticket .qr{width:210px;height:210px;margin:6px auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:10px}.ticket .qr svg{width:100%;height:100%;display:block}
 .ticket .code{font-size:1.35rem;font-weight:800;letter-spacing:.08em;margin-top:4px;color:var(--purple-dark)}
 .ticket .foot{font-size:.78rem;color:var(--muted);margin-top:8px}
@@ -120,7 +124,7 @@ dialog.sheet{width:520px}
 .air summary{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;list-style:none}
 .air summary::-webkit-details-marker{display:none}.air summary b{font-size:1.02rem}.air summary .meta{font-size:.8rem;color:var(--muted)}
 .air .list{padding:0 10px 10px;display:flex;flex-direction:column;gap:7px}
-.air .tk{padding:10px 12px}.air .tk .l1 b{font-size:1rem}.air .tk .l2{font-size:.76rem}.air .pay{width:26px;height:26px}.air .pp{font-size:.76rem}
+.air .tk{padding:10px 12px}.air .tk .l1 b{font-size:1rem}.air .tk .l2,.air .tk .l3{font-size:.76rem}.air .pay{width:26px;height:26px}.air .pp{font-size:.76rem}
 .bigpay{position:relative;border-radius:14px;padding:14px 46px 14px 14px;text-align:center;font-weight:800;font-size:1.15rem;margin:8px 0}
 .bigpay.yes{background:var(--green-soft);color:#166534}.bigpay.no{background:var(--red-soft);color:#991b1b}
 .bigpay small{display:block;font-weight:600;font-size:.82rem;margin-top:2px;opacity:.85}
@@ -173,7 +177,7 @@ dialog.sheet{width:520px}
   .trips{grid-template-columns:1fr}
   .bar{gap:8px}.bar .fld{flex:1 1 100%;min-width:0;order:-1}
   .daynav input{flex:1;min-width:0}
-  #btn-newtrip{width:100%}
+  .bar .btns{width:100%}.bar .btns .btn{flex:1}
   dialog,dialog.sheet{margin:auto auto 0;border-radius:20px 20px 0 0;max-width:100%;width:100%!important;max-height:94vh}
   dialog .dh{padding:12px 14px}dialog .db{padding:12px 14px}dialog .df{padding:10px 14px}
   .kv{grid-template-columns:96px 1fr}
@@ -225,7 +229,7 @@ dialog .df .flash{flex-basis:100%;margin:0 0 2px}
     </aside>
     <main>
       <div class="bar">
-        <button class="btn pri" id="btn-newtrip" type="button">＋ Tạo chuyến</button>
+        <div class="btns"><button class="btn pri" id="btn-newtrip" type="button">＋ Tạo chuyến</button><button class="btn line" id="btn-newtick" type="button">＋ Thêm khách</button></div>
         <div class="fld"><label for="day">Ngày xem (ngày chuyến chạy)</label><div class="daynav"><button class="btn sm" id="day-prev" type="button" title="Ngày trước">‹</button><input id="day" type="date"><button class="btn sm" id="day-next" type="button" title="Ngày sau">›</button><button class="btn sm line" id="day-today" type="button">Hôm nay</button></div></div>
       </div>
       <h2 class="trips-h" id="trips-title"></h2>
@@ -242,6 +246,7 @@ dialog .df .flash{flex-basis:100%;margin:0 0 2px}
 </div>
 
 <dialog id="dlg-ticket"></dialog>
+<dialog id="dlg-new"></dialog>
 <dialog id="dlg-trip"></dialog>
 <dialog id="dlg-quick" class="sheet"></dialog>
 <dialog id="dlg-qr"></dialog>
@@ -261,6 +266,13 @@ dialog .df .flash{flex-basis:100%;margin:0 0 2px}
    ===================================================================================== */
 const API_URL = 'https://script.google.com/macros/s/AKfycbxmvJRcGbiHd9MSKfyGIRDCIR3N4vp_KvgGciny-aSlW5pltRI6ykctX5nskrmqOHY/exec';
 const HOTLINE = '0325 392 290';
+// Hai điểm trả cố định, trùng với mục "Điểm trả" trên web khách. Thêm điểm mới: thêm một dòng ở đây.
+// name = tên ngắn (vé cũ có thể chỉ lưu tên này); label = chữ ghi vào Sheet, hiện trên danh sách, thẻ sân bay và vé QR (đã kèm địa chỉ).
+const DROPS = [
+  { name: 'Văn phòng Origo', label: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang' },
+  { name: '19 Nguyễn Đức Cảnh', label: '19 Nguyễn Đức Cảnh, Nam Nha Trang' },
+];
+const dropLabel = (v) => { v = (v || '').trim(); const p = DROPS.find((x) => x.name === v || x.label === v); return p ? p.label : v; };
 const PARAMS = new URLSearchParams(location.search);
 const DEMO = PARAMS.has('demo');
 const OPS = 'Vận hành', AIR = 'Sân bay';
@@ -271,6 +283,13 @@ const SKEY = DEMO ? 'origo_demo_session' : 'origo_session';
 const $ = (s, el) => (el || document).querySelector(s);
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const pad = (n) => String(n).padStart(2, '0');
+// Ô chọn điểm trả. Giá trị cũ không nằm trong danh sách (vé nhập tay trước đây) vẫn được giữ nguyên, không bị xóa khi lưu.
+function dropSelect(id, cur) {
+  cur = dropLabel(cur);
+  const list = DROPS.map((p) => p.label);
+  if (cur && !list.includes(cur)) list.push(cur);
+  return '<select id="' + id + '"><option value="">— chưa chọn điểm trả —</option>' + list.map((n) => '<option value="' + esc(n) + '"' + (n === cur ? ' selected' : '') + '>' + esc(n) + '</option>').join('') + '</select>';
+}
 const money = (n) => Number(n || 0).toLocaleString('vi-VN') + 'đ';
 const fmtD = (iso) => (iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) : '');
 const localToday = () => { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
@@ -444,8 +463,11 @@ function merge(r) {
   render();
 }
 const peopleIn = (code) => S.tickets.filter((t) => t.trip === code && inTrip(t)).reduce((n, t) => n + (t.people || 0), 0);
-const byFlight = (a, b) => (a.date + a.hour + a.name).localeCompare(b.date + b.hour + b.name);
-const matches = (t, q) => { q = (q || '').trim().toLowerCase(); return !q || [t.name, t.phone, t.code, t.flight, t.origin].join(' ').toLowerCase().includes(q); };
+// Giờ hạ cánh dùng để sắp xếp/hiển thị: giờ bay nhân viên đã cập nhật (nếu có), không thì giờ khách khai
+const effHour = (t) => t.realHour || t.hour || '';
+const hourTxt = (t) => (t.realHour && t.realHour !== t.hour ? t.realHour + (t.hour ? ' (khách khai ' + t.hour + ')' : '') : t.hour || '—');
+const byFlight = (a, b) => (a.date + effHour(a) + a.name).localeCompare(b.date + effHour(b) + b.name);
+const matches = (t, q) => { q = (q || '').trim().toLowerCase(); return !q || [t.name, t.phone, t.code, t.flight, t.origin, t.dropoff].join(' ').toLowerCase().includes(q); };
 
 /* ---------------- vẽ giao diện ---------------- */
 function render() { if (S.view === 'ops') renderOps(); else renderAir(); }
@@ -476,7 +498,8 @@ function tkHtml(t, o) {
     + '<span class="pp">' + t.people + ' người</span>'
     + (justReleased ? cancelIcon('Đã hủy chuyến') : t.status === ST.CANCEL ? cancelIcon('Đã hủy vé') : '')
     + payIcon(paid) + '</div>'
-    + '<div class="l2">' + esc(t.code) + ' · ' + esc(t.flight) + ' · ' + esc(t.hour) + ' ' + fmtD(t.date) + (o.origin ? ' · từ ' + esc(t.origin) : '') + (justReleased && !o.air ? ' · vừa hủy chuyến ' + esc(t.releasedTrip) : '') + '</div></div>';
+    + '<div class="l2">' + esc(t.code) + ' · ' + esc(t.flight) + ' · ' + esc(hourTxt(t)) + ' ' + fmtD(t.date) + (o.origin ? ' · từ ' + esc(t.origin) : '') + (justReleased && !o.air ? ' · vừa hủy chuyến ' + esc(t.releasedTrip) : '') + '</div>'
+    + (t.dropoff ? '<div class="l3">Trả: ' + esc(dropLabel(t.dropoff)) + '</div>' : '') + '</div>';
 }
 function setList(sel, items, emptyText) {
   $(sel).innerHTML = items.length ? items.map((t) => tkHtml(t, { drag: true })).join('') : '<div class="empty">' + emptyText + '</div>';
@@ -541,6 +564,7 @@ $('#day-prev').addEventListener('click', () => goDay(addDays(S.date, -1)));
 $('#day-next').addEventListener('click', () => goDay(addDays(S.date, 1)));
 $('#day-today').addEventListener('click', () => goDay(localToday()));
 $('#btn-newtrip').addEventListener('click', () => openTrip(null));
+$('#btn-newtick').addEventListener('click', () => openNew());
 document.addEventListener('click', (e) => {
   const tk = e.target.closest('.tk[data-t]');
   if (tk) { openByCode(tk.dataset.t); return; }
@@ -664,12 +688,14 @@ function openTicket(code, msg) {
     + '<div class="fcard"><h4>Hành khách</h4><div class="g2">'
     + '<div><label>Họ tên</label><input id="f-name" value="' + esc(t.name) + '" maxlength="80"></div>'
     + '<div><label>Số điện thoại</label><input id="f-phone" value="' + esc(t.phone) + '" inputmode="tel"></div>'
-    + '<div class="full"><label>Email</label><input id="f-email" value="' + esc(t.email) + '" inputmode="email"></div></div></div>'
+    + '</div></div>'
     + '<div class="fcard"><h4>Chuyến bay của khách</h4><div class="g2">'
     + '<div><label>Cất cánh từ</label><input id="f-origin" value="' + esc(t.origin) + '" maxlength="60"></div>'
     + '<div><label>Mã chuyến bay</label><input id="f-flight" value="' + esc(t.flight) + '" maxlength="7" style="text-transform:uppercase"></div>'
     + '<div><label>Ngày hạ cánh</label><input id="f-date" type="date" value="' + esc(t.date) + '"></div>'
-    + '<div><label>Giờ hạ cánh (đổi khi chuyến bay delay)</label><input id="f-hour" type="time" value="' + esc(t.hour) + '"></div></div></div>'
+    + '<div><label>Giờ hạ cánh (đổi khi chuyến bay delay)</label><input id="f-hour" type="time" value="' + esc(t.hour) + '"></div>'
+    + '<div class="full"><label>Giờ bay cập nhật (nhân viên điền sau khi kiểm tra mã chuyến bay)</label><input id="f-real" type="time" value="' + esc(t.realHour || '') + '"></div></div></div>'
+    + '<div class="fcard"><h4>Điểm trả khách</h4><label>Hỏi khách khi tư vấn rồi chọn. Điểm trả hiện trên vé QR và màn Sân bay</label>' + dropSelect('f-drop', t.dropoff) + '</div>'
     + '<div class="fcard"><h4>Số người và tiền</h4><div class="g2">'
     + '<div><label>Số người</label><input id="f-people" type="number" min="1" max="999" value="' + t.people + '"></div>'
     + '<div><label>Tổng tiền (đ)</label><input id="f-total" type="number" min="0" step="1000" value="' + t.total + '"></div></div></div>'
@@ -700,14 +726,15 @@ function openTicket(code, msg) {
   };
   d.querySelectorAll('input,textarea').forEach((el) => el.addEventListener('input', refresh));
   $('#f-trip', d).addEventListener('change', refresh);
+  $('#f-drop', d).addEventListener('change', refresh);
   // Mỗi lần vẽ lại popup thì hủy hẹn giờ cũ: máy chủ thật chậm vài giây, hẹn giờ của thông báo trước có thể xóa mất thông báo mới
   clearTimeout(d._flashTimer);
   if (msg) d._flashTimer = setTimeout(() => { const f = $('#flash', d); if (f) f.textContent = ''; }, 5000);
 }
 function ticketFields(d, t) {
   const v = (id) => $('#' + id, d).value;
-  const f = { name: v('f-name'), phone: v('f-phone'), email: v('f-email'), origin: v('f-origin'), flight: v('f-flight'), date: v('f-date'), hour: v('f-hour'), people: Number(v('f-people')), total: Number(v('f-total')), note: v('f-note') };
-  const cur = { name: t.name, phone: t.phone, email: t.email, origin: t.origin, flight: t.flight, date: t.date, hour: t.hour, people: t.people, total: t.total, note: t.note };
+  const f = { name: v('f-name'), phone: v('f-phone'), origin: v('f-origin'), flight: v('f-flight'), date: v('f-date'), hour: v('f-hour'), realHour: v('f-real'), dropoff: v('f-drop'), people: Number(v('f-people')), total: Number(v('f-total')), note: v('f-note') };
+  const cur = { name: t.name, phone: t.phone, origin: t.origin, flight: t.flight, date: t.date, hour: t.hour, realHour: t.realHour || '', dropoff: dropLabel(t.dropoff), people: t.people, total: t.total, note: t.note };
   const diff = {};
   Object.keys(f).forEach((k) => { if (String(f[k]).trim() !== String(cur[k])) diff[k] = f[k]; });
   return diff;
@@ -754,6 +781,60 @@ $('#dlg-ticket').addEventListener('click', async (e) => {
     else if (act === 'qr') { openQr(t.code); return; }
     else if (act === 'cancel') { const x = await doCancel(t); if (x) d.close(); return; }
     openTicket(t.code, r ? msg : '');
+  } finally { b.disabled = false; }
+});
+
+/* ---------- thêm khách thủ công (nhân viên vận hành nhập sau khi tư vấn) ---------- */
+function openNew() {
+  const d = $('#dlg-new');
+  d.dataset.rid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); // gửi hai lần vẫn chỉ ra một vé
+  d.innerHTML =
+    '<div class="dh hero"><div style="flex:1;min-width:0"><h2>Thêm khách</h2><small>Khách tư vấn qua điện thoại hoặc Zalo, vào thẳng nhóm “Đã xác nhận”</small></div><button class="btn sm" type="button" data-close>✕</button></div>'
+    + '<div class="db">'
+    + '<div class="fcard"><h4>Hành khách</h4><div class="g2">'
+    + '<div><label>Họ tên *</label><input id="n-name" maxlength="80" autocomplete="off"></div>'
+    + '<div><label>Số điện thoại *</label><input id="n-phone" inputmode="tel" autocomplete="off"></div>'
+    + '<div><label>Số người *</label><input id="n-people" type="number" min="1" max="999" value="1"></div>'
+    + '<div><label>Cất cánh từ</label><input id="n-origin" maxlength="60" autocomplete="off"></div></div>'
+    + '<p class="newsum" id="n-sum"></p></div>'
+    + '<div class="fcard"><h4>Chuyến bay của khách</h4><div class="g2">'
+    + '<div><label>Mã chuyến bay</label><input id="n-flight" maxlength="7" style="text-transform:uppercase" autocomplete="off"></div>'
+    + '<div><label>Ngày hạ cánh *</label><input id="n-date" type="date" value="' + esc(S.date) + '"></div>'
+    + '<div><label>Giờ hạ cánh (khách khai)</label><input id="n-hour" type="time"></div>'
+    + '<div><label>Giờ bay cập nhật</label><input id="n-real" type="time"></div></div></div>'
+    + '<div class="fcard"><h4>Điểm trả khách</h4>' + dropSelect('n-drop', '') + '</div>'
+    + '<div class="fcard"><h4>Ghi chú</h4><textarea id="n-note" rows="2" maxlength="600" placeholder="Ghi chú cho vé này…"></textarea></div>'
+    + '</div><div class="df"><div class="flash ok" id="n-err" style="color:var(--bad,#b91c1c)"></div><button class="btn pri" data-act="create" type="button">Thêm khách</button></div>';
+  const sum = () => { const n = Number($('#n-people', d).value) || 0; $('#n-sum', d).innerHTML = n >= 1 ? 'Thành tiền: <b>' + money(n * S.price) + '</b> (' + n + ' người × ' + money(S.price) + ')' : ''; };
+  $('#n-people', d).addEventListener('input', sum);
+  sum();
+  d.showModal();
+  $('#n-name', d).focus();
+}
+$('#dlg-new').addEventListener('click', async (e) => {
+  const d = e.currentTarget;
+  if (e.target.closest('[data-close]')) { d.close(); return; }
+  const b = e.target.closest('[data-act="create"]');
+  if (!b) return;
+  const v = (id) => $('#' + id, d).value.trim();
+  const bad = (m, id) => { $('#n-err', d).textContent = m; if (id) $('#' + id, d).focus(); };
+  const digits = v('n-phone').replace(/\D/g, '');
+  const people = Number(v('n-people'));
+  if (!v('n-name')) return bad('Nhập họ tên khách.', 'n-name');
+  if (digits.length < 8 || digits.length > 15) return bad('Số điện thoại chưa đúng.', 'n-phone');
+  if (!(people >= 1 && people === Math.floor(people))) return bad('Số người chưa đúng.', 'n-people');
+  if (!v('n-date')) return bad('Chọn ngày hạ cánh.', 'n-date');
+  bad('');
+  const fields = { name: v('n-name'), phone: v('n-phone'), people, origin: v('n-origin'), flight: v('n-flight'), date: v('n-date'), hour: v('n-hour'), realHour: v('n-real'), dropoff: v('n-drop'), note: $('#n-note', d).value };
+  b.disabled = true;
+  try {
+    const r = await api('ticket_create', { rid: d.dataset.rid, fields });
+    if (!r) return;
+    merge(r);
+    d.close();
+    const t = r.ticket;
+    toast('Đã thêm khách ' + t.name + ' (' + t.code + ')' + (t.date !== S.date ? ', ngày ' + fmtD(t.date) + ': đổi ngày xem để thấy trong danh sách' : ''), 'ok');
+    openTicket(t.code, 'Đã thêm khách. Chọn chuyến rồi bấm Lưu để xếp xe');
   } finally { b.disabled = false; }
 });
 
@@ -816,7 +897,7 @@ function openQr(code) {
     + '<div class="ticket"><div class="th"><span class="logo"><img src="logo.png" alt="Origo" onerror="this.parentNode.textContent=\'Origo\'"></span><b>Vé xe sân bay Origo</b></div><div class="tb">'
     + '<h3>' + esc(t.name) + '</h3><div class="route">Sân bay Cam Ranh → Nha Trang · ' + t.people + ' người</div>'
     + '<div class="qr">' + qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true }) + '</div><div class="code">' + esc(t.code) + '</div>'
-    + '<dl class="info"><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + '</dd><dt>Hạ cánh</dt><dd>' + esc(t.hour) + ' · ' + esc(t.date.split('-').reverse().join('/')) + '</dd></dl>'
+    + '<dl class="info"><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + '</dd><dt>Hạ cánh</dt><dd>' + esc(effHour(t) || '—') + ' · ' + esc(t.date.split('-').reverse().join('/')) + '</dd><dt class="wide">Điểm trả</dt><dd class="wide">' + (t.dropoff ? esc(dropLabel(t.dropoff)) : '—') + '</dd></dl>'
     + '<div class="foot">Đưa mã QR này cho nhân viên Origo khi gặp ở sân bay. Hotline ' + HOTLINE + '</div></div></div></div>'
     + '<div class="df"><button class="btn pri" data-close type="button">Xong</button></div>';
   d.showModal();
@@ -836,7 +917,7 @@ function openQuick(code) {
   d.innerHTML =
     '<div class="dh hero"><div style="flex:1;min-width:0"><h2>' + esc(t.name) + '</h2><small>' + esc(t.code) + '</small></div><span class="chip">' + esc(t.status) + '</span><button class="btn sm" data-close type="button">✕</button></div><div class="db"><div class="stack">'
     + notice
-    + '<dl class="kv"><dt>Số người</dt><dd><b>' + t.people + '</b></dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + ' · ' + esc(t.hour) + ' ' + fmtD(t.date) + (t.origin ? ' · từ ' + esc(t.origin) : '') + '</dd><dt>Điện thoại</dt><dd><a href="tel:' + esc(t.phone.replace(/[^\d+]/g, '')) + '">' + esc(t.phone) + '</a></dd><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd>' + (t.note ? '<dt>Ghi chú</dt><dd>' + esc(t.note) + '</dd>' : '') + '</dl>'
+    + '<dl class="kv"><dt>Số người</dt><dd><b>' + t.people + '</b></dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + ' · ' + esc(hourTxt(t)) + ' ' + fmtD(t.date) + (t.origin ? ' · từ ' + esc(t.origin) : '') + '</dd><dt>Điểm trả</dt><dd>' + (t.dropoff ? '<b>' + esc(dropLabel(t.dropoff)) + '</b>' : '—') + '</dd><dt>Điện thoại</dt><dd><a href="tel:' + esc(t.phone.replace(/[^\d+]/g, '')) + '">' + esc(t.phone) + '</a></dd><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd>' + (t.note ? '<dt>Ghi chú</dt><dd>' + esc(t.note) + '</dd>' : '') + '</dl>'
     + payCtl(t, true)
     + (inTripNow ? pickCtl(t, true) : '')
     + (t.status === ST.ASSIGNED ? '<button class="btn line bad" data-act="release">Hủy chuyến của khách (không gọi được…)</button>' : '')
@@ -927,7 +1008,7 @@ function demoDb() {
   try { db = JSON.parse(localStorage.getItem('origo_demo_db') || 'null'); } catch (e) {}
   if (db && db.day === localToday()) return db;
   const t = localToday(), tm = addDays(t, 1), md = (iso) => iso.slice(8, 10) + iso.slice(5, 7);
-  const mk = (o) => Object.assign({ email: 'khach@example.com', origin: 'Hà Nội', lang: 'vi', note: '', pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', trip: '', time: '15/11/2026 08:00:00', date: t }, o, { total: o.people * 80000 });
+  const mk = (o) => Object.assign({ origin: 'Hà Nội', lang: 'vi', realHour: '', dropoff: '', note: '', pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', trip: '', time: '15/11/2026 08:00:00', date: t }, o, { total: o.people * 80000 });
   db = {
     day: t,
     trips: [
@@ -935,13 +1016,13 @@ function demoDb() {
       { code: md(t) + '-7302', status: 'Hoạt động', date: t, hour: '18:20', capacity: 29, driver: '', driverPhone: '', plate: '', note: '' },
     ],
     tickets: [
-      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
+      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', realHour: '14:50', dropoff: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
       mk({ code: 'OG-R4T9WE', status: ST.ASSIGNED, name: 'Trần Thị Bích', phone: '0912 000 111', people: 4, flight: 'VN1546', hour: '14:40', trip: md(t) + '-4821', origin: 'TP.HCM' }),
       mk({ code: 'OG-H2D5NQ', status: ST.PICKED, name: 'Lê Hoàng', phone: '0933 777 888', people: 2, flight: 'VJ123', hour: '14:35', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Sân bay 1, 15/11 14:55', pickedAt: '15/11/2026 14:57:00', pickedBy: 'Nhân viên sân bay 1' }),
       mk({ code: 'OG-M8Y3CF', status: ST.ASSIGNED, name: 'Phạm Quốc Dũng', phone: '0977 321 654', people: 6, flight: 'QH202', hour: '18:05', trip: md(t) + '-7302', origin: 'Đà Nẵng' }),
       mk({ code: 'OG-B6J9AS', status: ST.OK, name: 'Võ Minh Châu', phone: '0968 555 444', people: 2, flight: 'VN7120', hour: '17:50', origin: 'Hải Phòng', releaseReason: 'Không liên lạc được (Nhân viên sân bay 1, 15/11 12:00)', releasedTrip: md(t) + '-7302' }),
       mk({ code: 'OG-P3E7ZU', status: ST.OK, name: 'Đặng Thu Hà', phone: '0944 100 200', people: 1, flight: 'VJ611', hour: '19:10', origin: 'Hà Nội' }),
-      mk({ code: 'OG-W5N2LT', status: ST.NEW, name: 'John Smith', phone: '+82 10 1234 5678', people: 2, flight: 'KE471', hour: '20:15', origin: 'Seoul', email: 'john@example.com', lang: 'en' }),
+      mk({ code: 'OG-W5N2LT', status: ST.NEW, name: 'John Smith', phone: '+82 10 1234 5678', people: 2, flight: 'KE471', hour: '20:15', origin: 'Seoul', lang: 'en' }),
       mk({ code: 'OG-Q9X4VD', status: ST.NEW, name: 'Иван Петров', phone: '+7 900 123-45-67', people: 5, flight: 'SU290', hour: '21:30', origin: 'Moscow', lang: 'ru', date: tm }),
       mk({ code: 'OG-A1B2CD', status: ST.CANCEL, name: 'Nguyễn Văn A', phone: '0901 222 333', people: 2, flight: 'VJ125', hour: '15:20', pay: PAYYES, payBy: 'Vận hành 1, 14/11 16:00', note: 'Hủy: khách đổi lịch' }),
       mk({ code: 'OG-D2F8GH', status: ST.CANCEL, name: 'Hoàng Gia Bảo', phone: '0988 222 333', people: 3, flight: 'VJ129', hour: '16:00', note: 'Hủy: khách đổi ý' }),
@@ -981,13 +1062,29 @@ async function demoApi(action, d) {
     if (action === 'ticket') { const t = tk(); return { ok: true, ticket: cl(t), trip: db.trips.find((x) => x.code === t.trip) || null }; }
     if (action === 'ticket_update') {
       const t = tk(), f = d.fields || {};
-      ['name', 'phone', 'email', 'origin', 'note', 'date', 'hour'].forEach((k) => { if (k in f) t[k] = String(f[k]); });
+      ['name', 'phone', 'origin', 'note', 'date', 'hour', 'realHour', 'dropoff'].forEach((k) => { if (k in f) t[k] = String(f[k]); });
       if ('flight' in f) { const v = String(f.flight).toUpperCase().replace(/[^A-Z0-9]/g, ''); if (!/^[A-Z0-9]{2}\d{1,4}[A-Z]?$/.test(v)) return err('invalid', 'Mã chuyến bay chưa đúng'); t.flight = v; }
       if ('people' in f) { t.people = Number(f.people); if (!('total' in f)) t.total = t.people * 80000; }
       if ('total' in f) t.total = Number(f.total);
       save();
       const warn = []; if (t.trip && used(t.trip) > db.trips.find((x) => x.code === t.trip).capacity) warn.push('Chuyến ' + t.trip + ' đang vượt sức chứa');
       return { ok: true, ticket: cl(t), warn };
+    }
+    if (action === 'ticket_create') {
+      const f = d.fields || {}, name = String(f.name || '').trim(), people = Number(f.people), date = String(f.date || '') || localToday();
+      if (!name) return err('invalid', 'Họ tên chưa đúng');
+      if (String(f.phone || '').replace(/\D/g, '').length < 8) return err('invalid', 'Số điện thoại chưa đúng');
+      if (!(people >= 1 && people === Math.floor(people))) return err('invalid', 'Số người chưa đúng');
+      const rid = d.rid ? 'TAY-' + d.rid : '';
+      const ex = rid && db.tickets.find((x) => x.rid === rid);
+      if (ex) return { ok: true, duplicate: true, ticket: cl(ex) };
+      const AB = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code;
+      do { code = 'OG-' + Array.from({ length: 6 }, () => AB[Math.floor(Math.random() * AB.length)]).join(''); } while (db.tickets.some((x) => x.code === code));
+      const t = { code, rid, status: ST.OK, name, phone: String(f.phone).trim(), people, origin: String(f.origin || ''), flight: String(f.flight || '').toUpperCase().replace(/[^A-Z0-9]/g, ''), date, hour: String(f.hour || ''), realHour: String(f.realHour || ''), dropoff: String(f.dropoff || ''), trip: '', total: people * 80000, pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', note: String(f.note || ''), lang: 'vi', time: now() };
+      db.tickets.push(t);
+      save();
+      return { ok: true, ticket: cl(t) };
     }
     if (action === 'ticket_confirm') { const t = tk(); if (t.status === ST.CANCEL) { const m = (t.note.match(/khỏi chuyến (\d{4}-\d{4})/g) || []).pop(); t.note = (t.note ? t.note + ' | ' : '') + 'Khôi phục ' + now() + (m ? ' (chuyến cũ ' + m.replace('khỏi chuyến ', '') + ' đã hủy)' : ''); } if (t.status === ST.NEW || t.status === ST.CANCEL) t.status = ST.OK; save(); return { ok: true, ticket: cl(t) }; }
     if (action === 'ticket_cancel') { const t = tk(); if (t.status === ST.PICKED) return err('picked', 'Khách đã được đón, không hủy được.'); t.note = (t.note ? t.note + ' | ' : '') + 'Hủy ' + now() + (t.trip ? ' khỏi chuyến ' + t.trip : '') + (d.reason ? ': ' + d.reason : ''); t.status = ST.CANCEL; t.trip = ''; t.releasedTrip = ''; save(); return { ok: true, ticket: cl(t) }; }
