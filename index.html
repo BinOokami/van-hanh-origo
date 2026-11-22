@@ -283,7 +283,7 @@ dialog .df .flash{flex-basis:100%;margin:0 0 2px}
     <aside>
       <section class="zone z-new" data-drop="new" id="zone-new"><h3>Khách mới, chờ xác nhận <span class="chip warn" id="n-new">0</span><small id="s-new"></small></h3><input class="zs" data-zq="new" type="search" placeholder="Tìm khách mới…"><div class="list" id="list-new"></div></section>
       <section class="zone z-free" data-drop="free" id="zone-free"><h3>Đã xác nhận, chưa xếp chuyến <span class="chip blue" id="n-free">0</span><small id="s-free"></small></h3><input class="zs" data-zq="free" type="search" placeholder="Tìm khách đã xác nhận…"><div class="list" id="list-free"></div></section>
-      <section class="zone z-cancel" data-drop="cancel" id="zone-cancel"><h3>Đã hủy vé, cần liên hệ xếp lại <span class="chip bad" id="n-cancel">0</span><small id="s-cancel"></small></h3><input class="zs" data-zq="cancel" type="search" placeholder="Tìm khách đã hủy…"><div class="list" id="list-cancel"></div></section>
+      <section class="zone z-cancel" data-drop="cancel" id="zone-cancel"><h3>Vé đã hủy <span class="chip bad" id="n-cancel">0</span><small id="s-cancel"></small></h3><input class="zs" data-zq="cancel" type="search" placeholder="Tìm khách đã hủy…"><div class="list" id="list-cancel"></div></section>
     </aside>
     <main>
       <div class="bar">
@@ -715,7 +715,7 @@ document.addEventListener('drop', async (e) => {
 /* ---------------- thao tác (dùng chung cho kéo thả, popup, điện thoại) ---------------- */
 async function doConfirm(t) { const was = t.status; const r = await api('ticket_confirm', { code: t.code }); if (r) { merge(r); toast(was === ST.CANCEL ? 'Đã khôi phục ' + t.name + ', về nhóm chưa xếp chuyến.' : 'Đã xác nhận ' + t.name, 'ok'); } return r; }
 async function doCancel(t) {
-  const reason = await askReason('Hủy vé của ' + t.name, ['Khách hủy', 'Không liên lạc được', 'Đặt trùng']);
+  const reason = await askReason('Hủy vé của ' + t.name, ['Khách hủy', 'Không liên lạc được', 'Đặt trùng'], 'Vé sẽ không còn hiệu lực. Nếu chỉ muốn rút khách khỏi chuyến mà vẫn giữ vé thì dùng “Hủy chuyến của khách”.');
   if (reason == null) return null;
   const r = await api('ticket_cancel', { code: t.code, reason });
   if (r) { merge(r); toast('Đã hủy vé ' + t.name + ', chuyển sang nhóm đã hủy.', 'ok'); }
@@ -723,7 +723,7 @@ async function doCancel(t) {
 }
 async function doAssign(t, tripCode) { if (t.trip === tripCode) return null; const r = await api('ticket_assign', { code: t.code, trip: tripCode }); if (r) { merge(r); toast('Đã xếp ' + t.name + ' vào chuyến ' + tripCode, 'ok'); } return r; }
 async function doRelease(t) {
-  const reason = await askReason('Hủy chuyến của ' + t.name + ' (chuyến ' + t.trip + ')', ['Không liên lạc được', 'Khách hủy', 'Lệch chuyến bay', 'Chờ quá lâu']);
+  const reason = await askReason('Hủy chuyến của ' + t.name + ' (chuyến ' + t.trip + ')', ['Không liên lạc được', 'Khách hủy', 'Lệch chuyến bay', 'Chờ quá lâu'], 'Khách vẫn giữ vé, chỉ rút khỏi chuyến và về nhóm “Đã xác nhận” để vận hành xếp lại. Muốn bỏ hẳn vé thì vận hành dùng “Hủy vé”.');
   if (reason == null) return null;
   const r = await api('ticket_release', { code: t.code, reason });
   if (r) { merge(r); toast('Đã hủy chuyến của ' + t.name + ', khách về nhóm chưa xếp chuyến.', 'ok'); }
@@ -733,10 +733,10 @@ async function doRejoin(t) { const r = await api('ticket_rejoin', { code: t.code
 async function doPickup(t, undo) { const r = await api('ticket_pickup', { code: t.code, undo: !!undo }); if (r) { merge(r); toast(undo ? 'Đã bỏ đánh dấu đã đón' : 'Đã đón ' + t.name, 'ok'); } return r; }
 async function doPay(t, paid) { const r = await api('ticket_pay', { code: t.code, paid }); if (r) { merge(r); toast(paid ? 'Đã ghi nhận thanh toán' : 'Đã bỏ đánh dấu thanh toán', 'ok'); } return r; }
 
-function askReason(title, quick) {
+function askReason(title, quick, note) {
   return new Promise((resolve) => {
     const d = $('#dlg-ask');
-    d.innerHTML = '<div class="dh"><h2>' + esc(title) + '</h2></div><div class="db"><label for="ask-t">Lý do (bắt buộc)</label><div class="reasons">' + quick.map((q) => '<button type="button" class="btn sm line" data-q="' + esc(q) + '">' + esc(q) + '</button>').join('') + '</div><textarea id="ask-t" rows="2" maxlength="200" placeholder="Ví dụ: gọi 3 lần không bắt máy"></textarea></div><div class="df"><button class="btn bad" id="ask-ok" type="button">Xác nhận</button><button class="btn" id="ask-no" type="button">Bỏ qua</button></div>';
+    d.innerHTML = '<div class="dh"><h2>' + esc(title) + '</h2></div><div class="db">' + (note ? '<p class="meta" style="margin:0 0 10px">' + esc(note) + '</p>' : '') + '<label for="ask-t">Lý do (bắt buộc)</label><div class="reasons">' + quick.map((q) => '<button type="button" class="btn sm line" data-q="' + esc(q) + '">' + esc(q) + '</button>').join('') + '</div><textarea id="ask-t" rows="2" maxlength="200" placeholder="Ví dụ: gọi 3 lần không bắt máy"></textarea></div><div class="df"><button class="btn bad" id="ask-ok" type="button">Xác nhận</button><button class="btn" id="ask-no" type="button">Bỏ qua</button></div>';
     let done = false;
     const finish = (v) => { if (done) return; done = true; d.close(); resolve(v); };
     d.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click', () => { $('#ask-t').value = b.dataset.q; }));
@@ -830,7 +830,7 @@ function openTicket(code, msg) {
     + '<div><label>Số người</label><input id="f-people" type="number" min="1" max="999" value="' + t.people + '"></div>'
     + '<div><label>Tổng tiền (đ)</label><input id="f-total" type="number" min="0" step="1000" value="' + t.total + '"></div></div></div>'
     + '<div class="fcard"><h4>Ghi chú</h4><textarea id="f-note" rows="3" maxlength="600" placeholder="Ghi chú cho vé này…">' + esc(t.note) + '</textarea></div>'
-    + '<div class="fcard"><h4>Chuyến xe</h4><label>Chọn chuyến rồi bấm “Lưu thay đổi” mới áp dụng</label><select id="f-trip"' + (tripOk ? '' : ' disabled') + '>' + tripOptions(t) + '</select>'
+    + '<div class="fcard"><h4>Chuyến xe</h4><label>Chọn chuyến rồi bấm “Lưu thay đổi” mới áp dụng. Chọn “chưa xếp chuyến” = hủy chuyến của khách (vé vẫn giữ)</label><select id="f-trip"' + (tripOk ? '' : ' disabled') + '>' + tripOptions(t) + '</select>'
     + (st === ST.NEW ? '<p class="meta" style="margin:8px 0 0">Cần bấm “Đã gọi, xác nhận” trước khi xếp vào chuyến.</p>' : '')
     + (t.releaseReason ? '<p class="meta" style="margin:8px 0 0;color:var(--amber);font-weight:600">Lý do hủy chuyến gần nhất: ' + esc(t.releaseReason) + '</p>' : '') + '</div>'
     + '</div><div class="df"><div class="flash ok" id="flash">' + (msg ? '✓ ' + esc(msg) : '') + '</div>'
@@ -1086,7 +1086,7 @@ function openTrip(code) {
     + '<div><label>SĐT tài xế</label><input id="t-dphone" value="' + esc(v.driverPhone) + '" inputmode="tel"></div>'
     + '<div class="full"><label>Ghi chú</label><textarea id="t-note" rows="2" maxlength="200">' + esc(v.note) + '</textarea></div></div></div>'
     + '<div class="df"><button class="btn pri" data-act="save">' + (tr ? 'Lưu chuyến' : 'Tạo chuyến') + '</button>'
-    + (tr ? '<button class="btn line bad" data-act="cancel-trip" style="margin-left:auto">Hủy chuyến</button>' : '') + '</div>';
+    + (tr ? '<button class="btn line bad" data-act="cancel-trip" style="margin-left:auto">Hủy chuyến xe</button>' : '') + '</div>';
   d.dataset.code = code || '';
   d.showModal();
 }
@@ -1106,9 +1106,9 @@ $('#dlg-trip').addEventListener('click', async (e) => {
       const r = await api(code ? 'trip_update' : 'trip_create', code ? { code, fields: f } : { fields: f });
       if (r) { merge(r); toast(code ? 'Đã lưu chuyến' : 'Đã tạo chuyến ' + r.trip.code, 'ok'); d.close(); }
     } else if (b.dataset.act === 'cancel-trip') {
-      if (!confirm('Hủy chuyến ' + code + '? (chỉ hủy được khi chuyến không còn khách)')) return;
+      if (!confirm('Hủy chuyến xe ' + code + '? (chỉ hủy được khi chuyến không còn khách)')) return;
       const r = await api('trip_cancel', { code });
-      if (r) { merge(r); toast('Đã hủy chuyến', 'ok'); d.close(); }
+      if (r) { merge(r); toast('Đã hủy chuyến xe', 'ok'); d.close(); }
     }
   } finally { b.disabled = false; }
 });
@@ -1150,7 +1150,7 @@ function openQuick(code) {
     + '<dl class="kv"><dt>Số người</dt><dd><b>' + t.people + '</b></dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + ' · ' + esc(hourTxt(t)) + ' ' + fmtD(t.date) + (t.origin ? ' · từ ' + esc(t.origin) : '') + '</dd><dt>Điểm trả</dt><dd>' + (t.dropoff ? '<b>' + esc(dropShow(t)) + '</b>' : '—') + '</dd><dt>Điện thoại</dt><dd><a href="tel:' + esc(t.phone.replace(/[^\d+]/g, '')) + '">' + esc(t.phone) + '</a></dd><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd>' + (t.note ? '<dt>Ghi chú</dt><dd>' + esc(t.note) + '</dd>' : '') + '</dl>'
     + payCtl(t, true)
     + (inTripNow ? pickCtl(t, true) : '')
-    + (t.status === ST.ASSIGNED ? '<button class="btn line bad" data-act="release">Hủy chuyến của khách (không gọi được…)</button>' : '')
+    + (t.status === ST.ASSIGNED ? '<button class="btn line bad" data-act="release">Hủy chuyến của khách (không gọi được…)</button><div class="meta" style="margin:-4px 2px 0">Khách vẫn giữ vé, chỉ rút khỏi chuyến để vận hành xếp lại.</div>' : '')
     + '</div></div>';
   d.dataset.code = code;
   if (!d.open) d.showModal();
