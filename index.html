@@ -341,6 +341,8 @@ const DROPS = [
   { name: 'Văn phòng Origo', label: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang' },
 ];
 const DROP_NEW = '__moi'; // lựa chọn "＋ Thêm điểm trả mới…" trong ô chọn
+// Điểm trả hiển thị = điểm trong danh sách + ghi chú riêng của vé (vd "Cổng A"), ghi chú nằm ở cột riêng nên không đổi điểm trong danh sách
+const dropShow = (t, sep) => dropLabel(t.dropoff) + (t.dropNote ? (sep || ' · ') + t.dropNote : '');
 const dropLabel = (v) => { v = (v || '').trim(); const p = DROPS.find((x) => x.name === v || x.label === v); return p ? p.label : v; };
 const PARAMS = new URLSearchParams(location.search);
 const DEMO = PARAMS.has('demo');
@@ -354,22 +356,25 @@ const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':
 const pad = (n) => String(n).padStart(2, '0');
 // Ô chọn điểm trả: chọn từ danh sách (điểm đầu là Văn phòng Origo), hoặc "＋ Thêm điểm trả mới…" thì hiện ô nhập tay và tùy chọn lưu vào danh sách.
 // Vé cũ ghi điểm không còn trong danh sách vẫn hiện đúng chữ cũ (thêm vào cuối ô chọn), không bị xóa khi lưu.
-function dropSelect(id, cur) {
+function dropSelect(id, cur, note) {
   cur = dropLabel(cur);
   const names = S.places.map((p) => p.name);
   if (cur && !names.includes(cur)) names.push(cur);
   return '<select id="' + id + '"><option value="">— chưa chọn điểm trả —</option>'
     + names.map((n) => '<option value="' + esc(n) + '"' + (n === cur ? ' selected' : '') + '>' + esc(n) + '</option>').join('')
     + '<option value="' + DROP_NEW + '">＋ Thêm điểm trả mới…</option></select>'
+    + '<input id="' + id + '-note" maxlength="120" autocomplete="off" placeholder="Ghi chú thêm cho điểm này, ví dụ: Cổng A (chỉ ghi cho vé này)" style="margin-top:8px" value="' + esc(note || '') + '"' + (cur ? '' : ' hidden') + '>'
     + '<div id="' + id + '-new" hidden style="margin-top:8px"><input id="' + id + '-txt" maxlength="120" autocomplete="off" placeholder="Tên khách sạn và địa chỉ">'
     + '<label style="display:flex;gap:7px;align-items:center;margin:7px 0 0;font-weight:500"><input type="checkbox" id="' + id + '-save" checked style="width:auto;margin:0"> Lưu vào danh sách điểm trả</label></div>';
 }
 // Giá trị điểm trả đang chọn (chữ ghi vào Sheet)
+// Ghi chú thêm của điểm đang chọn (chỉ có khi đã chọn một điểm)
+const dropNoteVal = (id, d) => ($('#' + id, d).value ? $('#' + id + '-note', d).value.trim() : '');
 const dropVal = (id, d) => { const sel = $('#' + id, d); return sel.value === DROP_NEW ? $('#' + id + '-txt', d).value.trim() : sel.value; };
 // Chọn "Thêm điểm trả mới" thì hiện ô nhập
 function wireDrop(id, d, onChange) {
   const sel = $('#' + id, d);
-  sel.addEventListener('change', () => { const fresh = sel.value === DROP_NEW; $('#' + id + '-new', d).hidden = !fresh; if (fresh) $('#' + id + '-txt', d).focus(); if (onChange) onChange(); });
+  sel.addEventListener('change', () => { const fresh = sel.value === DROP_NEW; $('#' + id + '-new', d).hidden = !fresh; $('#' + id + '-note', d).hidden = sel.value === ''; if (fresh) $('#' + id + '-txt', d).focus(); if (onChange) onChange(); });
 }
 // Điểm nhập mới và đang tích "Lưu vào danh sách" thì thêm vào danh sách điểm trả trước khi lưu vé. Không thêm được thì vé vẫn lưu bình thường.
 async function keepNewPlace(id, d) {
@@ -566,7 +571,7 @@ const peopleIn = (code) => S.tickets.filter((t) => t.trip === code && inTrip(t))
 const effHour = (t) => t.realHour || t.hour || '';
 const hourTxt = (t) => (t.realHour && t.realHour !== t.hour ? t.realHour + (t.hour ? ' (đăng ký ' + t.hour + ')' : '') : t.hour || '—');
 const byFlight = (a, b) => (a.date + effHour(a) + a.name).localeCompare(b.date + effHour(b) + b.name);
-const matches = (t, q) => { q = (q || '').trim().toLowerCase(); return !q || [t.name, t.phone, t.code, t.flight, t.origin, t.dropoff].join(' ').toLowerCase().includes(q); };
+const matches = (t, q) => { q = (q || '').trim().toLowerCase(); return !q || [t.name, t.phone, t.code, t.flight, t.origin, t.dropoff, t.dropNote].join(' ').toLowerCase().includes(q); };
 
 /* ---------------- vẽ giao diện ---------------- */
 function render() { if (S.view === 'ops') renderOps(); else if (S.view === 'admin') renderAdm(); else renderAir(); }
@@ -598,7 +603,7 @@ function tkHtml(t, o) {
     + (justReleased ? cancelIcon('Đã hủy chuyến') : t.status === ST.CANCEL ? cancelIcon('Đã hủy vé') : '')
     + payIcon(paid) + '</div>'
     + '<div class="l2">' + esc(t.code) + ' · ' + esc(t.flight) + ' · ' + esc(hourTxt(t)) + ' ' + fmtD(t.date) + (o.origin ? ' · từ ' + esc(t.origin) : '') + (justReleased && !o.air ? ' · vừa hủy chuyến ' + esc(t.releasedTrip) : '') + '</div>'
-    + (t.dropoff ? '<div class="l3">Trả: ' + esc(dropLabel(t.dropoff)) + '</div>' : '') + '</div>';
+    + (t.dropoff ? '<div class="l3">Trả: ' + esc(dropShow(t)) + '</div>' : '') + '</div>';
 }
 function setList(sel, items, emptyText) {
   $(sel).innerHTML = items.length ? items.map((t) => tkHtml(t, { drag: true })).join('') : '<div class="empty">' + emptyText + '</div>';
@@ -820,7 +825,7 @@ function openTicket(code, msg) {
     + '<div><label>Ngày hạ cánh</label><input id="f-date" type="date" value="' + esc(t.date) + '"></div>'
     + '<div><label>Giờ hạ cánh (đổi khi chuyến bay delay)</label><input id="f-hour" type="time" value="' + esc(t.hour) + '"></div>'
     + '<div class="full"><label>Giờ bay</label><input id="f-real" type="time" value="' + esc(t.realHour || '') + '"></div></div></div>'
-    + '<div class="fcard"><h4>Điểm trả khách</h4><label>Hỏi khách khi tư vấn rồi chọn. Khách sạn chưa có trong danh sách thì chọn “Thêm điểm trả mới”. Điểm trả hiện trên vé QR và màn Sân bay</label>' + dropSelect('f-drop', t.dropoff) + '</div>'
+    + '<div class="fcard"><h4>Điểm trả khách</h4><label>Hỏi khách khi tư vấn rồi chọn. Khách sạn chưa có trong danh sách thì chọn “Thêm điểm trả mới”. Có thể ghi thêm cho riêng vé này (vd: Cổng A), không đổi danh sách. Điểm trả hiện trên vé QR và màn Sân bay</label>' + dropSelect('f-drop', t.dropoff, t.dropNote) + '</div>'
     + '<div class="fcard"><h4>Số người và tiền</h4><div class="g2">'
     + '<div><label>Số người</label><input id="f-people" type="number" min="1" max="999" value="' + t.people + '"></div>'
     + '<div><label>Tổng tiền (đ)</label><input id="f-total" type="number" min="0" step="1000" value="' + t.total + '"></div></div></div>'
@@ -858,8 +863,8 @@ function openTicket(code, msg) {
 }
 function ticketFields(d, t) {
   const v = (id) => $('#' + id, d).value;
-  const f = { name: v('f-name'), phone: v('f-phone'), origin: v('f-origin'), flight: v('f-flight'), date: v('f-date'), hour: v('f-hour'), realHour: v('f-real'), dropoff: dropVal('f-drop', d), people: Number(v('f-people')), total: Number(v('f-total')), note: v('f-note') };
-  const cur = { name: t.name, phone: t.phone, origin: t.origin, flight: t.flight, date: t.date, hour: t.hour, realHour: t.realHour || '', dropoff: dropLabel(t.dropoff), people: t.people, total: t.total, note: t.note };
+  const f = { name: v('f-name'), phone: v('f-phone'), origin: v('f-origin'), flight: v('f-flight'), date: v('f-date'), hour: v('f-hour'), realHour: v('f-real'), dropoff: dropVal('f-drop', d), dropNote: dropNoteVal('f-drop', d), people: Number(v('f-people')), total: Number(v('f-total')), note: v('f-note') };
+  const cur = { name: t.name, phone: t.phone, origin: t.origin, flight: t.flight, date: t.date, hour: t.hour, realHour: t.realHour || '', dropoff: dropLabel(t.dropoff), dropNote: t.dropNote || '', people: t.people, total: t.total, note: t.note };
   const diff = {};
   Object.keys(f).forEach((k) => { if (String(f[k]).trim() !== String(cur[k])) diff[k] = f[k]; });
   return diff;
@@ -953,7 +958,7 @@ $('#dlg-new').addEventListener('click', async (e) => {
   if (!v('n-date')) return bad('Chọn ngày hạ cánh.', 'n-date');
   if ($('#n-drop', d).value === DROP_NEW && !dropVal('n-drop', d)) return bad('Nhập khách sạn / địa chỉ trả, hoặc chọn lại “chưa chọn điểm trả”.', 'n-drop-txt');
   bad('');
-  const fields = { name: v('n-name'), phone: v('n-phone'), people, origin: v('n-origin'), flight: v('n-flight'), date: v('n-date'), hour: v('n-hour'), realHour: v('n-real'), dropoff: dropVal('n-drop', d), note: $('#n-note', d).value };
+  const fields = { name: v('n-name'), phone: v('n-phone'), people, origin: v('n-origin'), flight: v('n-flight'), date: v('n-date'), hour: v('n-hour'), realHour: v('n-real'), dropoff: dropVal('n-drop', d), dropNote: dropNoteVal('n-drop', d), note: $('#n-note', d).value };
   b.disabled = true;
   try {
     await keepNewPlace('n-drop', d);
@@ -1122,7 +1127,7 @@ function openQr(code) {
     + '<div class="ticket"><div class="th"><span class="logo"><img src="logo.png" alt="Origo" onerror="this.parentNode.textContent=\'Origo\'"></span><b>Vé xe sân bay Origo</b></div><div class="tb">'
     + '<h3>' + esc(t.name) + '</h3><div class="route">Sân bay Cam Ranh → Nha Trang · ' + t.people + ' người</div>'
     + '<div class="qr">' + qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true }) + '</div><div class="code">' + esc(t.code) + '</div>'
-    + '<dl class="info"><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + '</dd><dt>Hạ cánh</dt><dd>' + esc(effHour(t) || '—') + ' · ' + esc(t.date.split('-').reverse().join('/')) + '</dd><dt class="wide">Điểm trả</dt><dd class="wide">' + (t.dropoff ? esc(dropLabel(t.dropoff)) : '—') + '</dd></dl>'
+    + '<dl class="info"><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + '</dd><dt>Hạ cánh</dt><dd>' + esc(effHour(t) || '—') + ' · ' + esc(t.date.split('-').reverse().join('/')) + '</dd><dt class="wide">Điểm trả</dt><dd class="wide">' + (t.dropoff ? esc(dropLabel(t.dropoff)) + (t.dropNote ? '<br><b>' + esc(t.dropNote) + '</b>' : '') : '—') + '</dd></dl>'
     + '<div class="foot">Đưa mã QR này cho nhân viên Origo khi gặp ở sân bay. Hotline ' + HOTLINE + '</div></div></div></div>'
     + '<div class="df"><button class="btn pri" data-close type="button">Xong</button></div>';
   d.showModal();
@@ -1142,7 +1147,7 @@ function openQuick(code) {
   d.innerHTML =
     '<div class="dh hero"><div style="flex:1;min-width:0"><h2>' + esc(t.name) + '</h2><small>' + esc(t.code) + '</small></div><span class="chip">' + esc(t.status) + '</span><button class="btn sm" data-close type="button">✕</button></div><div class="db"><div class="stack">'
     + notice
-    + '<dl class="kv"><dt>Số người</dt><dd><b>' + t.people + '</b></dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + ' · ' + esc(hourTxt(t)) + ' ' + fmtD(t.date) + (t.origin ? ' · từ ' + esc(t.origin) : '') + '</dd><dt>Điểm trả</dt><dd>' + (t.dropoff ? '<b>' + esc(dropLabel(t.dropoff)) + '</b>' : '—') + '</dd><dt>Điện thoại</dt><dd><a href="tel:' + esc(t.phone.replace(/[^\d+]/g, '')) + '">' + esc(t.phone) + '</a></dd><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd>' + (t.note ? '<dt>Ghi chú</dt><dd>' + esc(t.note) + '</dd>' : '') + '</dl>'
+    + '<dl class="kv"><dt>Số người</dt><dd><b>' + t.people + '</b></dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + ' · ' + esc(hourTxt(t)) + ' ' + fmtD(t.date) + (t.origin ? ' · từ ' + esc(t.origin) : '') + '</dd><dt>Điểm trả</dt><dd>' + (t.dropoff ? '<b>' + esc(dropShow(t)) + '</b>' : '—') + '</dd><dt>Điện thoại</dt><dd><a href="tel:' + esc(t.phone.replace(/[^\d+]/g, '')) + '">' + esc(t.phone) + '</a></dd><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd>' + (t.note ? '<dt>Ghi chú</dt><dd>' + esc(t.note) + '</dd>' : '') + '</dl>'
     + payCtl(t, true)
     + (inTripNow ? pickCtl(t, true) : '')
     + (t.status === ST.ASSIGNED ? '<button class="btn line bad" data-act="release">Hủy chuyến của khách (không gọi được…)</button>' : '')
@@ -1233,7 +1238,7 @@ function demoDb() {
   try { db = JSON.parse(localStorage.getItem('origo_demo_db') || 'null'); } catch (e) {}
   if (db && db.day === localToday() && db.hist) return db; // db cũ chưa có lịch sử vé thì tạo lại
   const t = localToday(), tm = addDays(t, 1), md = (iso) => iso.slice(8, 10) + iso.slice(5, 7);
-  const mk = (o) => Object.assign({ origin: 'Hà Nội', lang: 'vi', realHour: '', dropoff: '', note: '', pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', trip: '', time: '15/11/2026 08:00:00', date: t }, o, { total: totalFor(o.people) });
+  const mk = (o) => Object.assign({ origin: 'Hà Nội', lang: 'vi', realHour: '', dropoff: '', dropNote: '', note: '', pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', trip: '', time: '15/11/2026 08:00:00', date: t }, o, { total: totalFor(o.people) });
   db = {
     day: t,
     trips: [
@@ -1241,7 +1246,7 @@ function demoDb() {
       { code: md(t) + '-7302', status: 'Hoạt động', date: t, hour: '18:20', capacity: 29, driver: '', driverPhone: '', plate: '', note: '' },
     ],
     tickets: [
-      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', realHour: '14:50', dropoff: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
+      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', realHour: '14:50', dropoff: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang', dropNote: 'Cổng chính', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
       mk({ code: 'OG-R4T9WE', status: ST.ASSIGNED, name: 'Trần Thị Bích', phone: '0912 000 111', people: 4, flight: 'VN1546', hour: '14:40', trip: md(t) + '-4821', origin: 'TP.HCM' }),
       mk({ code: 'OG-H2D5NQ', status: ST.PICKED, name: 'Lê Hoàng', phone: '0933 777 888', people: 2, flight: 'VJ123', hour: '14:35', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Sân bay 1, 15/11 14:55', pickedAt: '15/11/2026 14:57:00', pickedBy: 'Nhân viên sân bay 1' }),
       mk({ code: 'OG-M8Y3CF', status: ST.ASSIGNED, name: 'Phạm Quốc Dũng', phone: '0977 321 654', people: 6, flight: 'QH202', hour: '18:05', trip: md(t) + '-7302', origin: 'Đà Nẵng' }),
@@ -1336,7 +1341,7 @@ async function demoApi(action, d) {
     if (action === 'ticket') { const t = tk(); return { ok: true, ticket: cl(t), trip: db.trips.find((x) => x.code === t.trip) || null }; }
     if (action === 'ticket_update') {
       const t = tk(), f = d.fields || {};
-      ['name', 'phone', 'origin', 'note', 'date', 'hour', 'realHour', 'dropoff'].forEach((k) => { if (k in f) t[k] = String(f[k]); });
+      ['name', 'phone', 'origin', 'note', 'date', 'hour', 'realHour', 'dropoff', 'dropNote'].forEach((k) => { if (k in f) t[k] = String(f[k]); });
       if ('flight' in f) { const v = String(f.flight).toUpperCase().replace(/[^A-Z0-9]/g, ''); if (!/^[A-Z0-9]{2}\d{1,4}[A-Z]?$/.test(v)) return err('invalid', 'Mã chuyến bay chưa đúng'); t.flight = v; }
       if ('people' in f) { t.people = Number(f.people); if (!('total' in f)) t.total = totalFor(t.people); }
       if ('total' in f) t.total = Number(f.total);
@@ -1355,7 +1360,7 @@ async function demoApi(action, d) {
       const AB = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let code;
       do { code = 'OG-' + Array.from({ length: 6 }, () => AB[Math.floor(Math.random() * AB.length)]).join(''); } while (db.tickets.some((x) => x.code === code));
-      const t = { code, rid, status: ST.OK, name, phone: String(f.phone).trim(), people, origin: String(f.origin || ''), flight: String(f.flight || '').toUpperCase().replace(/[^A-Z0-9]/g, ''), date, hour: String(f.hour || ''), realHour: String(f.realHour || ''), dropoff: String(f.dropoff || ''), trip: '', total: totalFor(people), pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', note: String(f.note || ''), lang: 'vi', time: now() };
+      const t = { code, rid, status: ST.OK, name, phone: String(f.phone).trim(), people, origin: String(f.origin || ''), flight: String(f.flight || '').toUpperCase().replace(/[^A-Z0-9]/g, ''), date, hour: String(f.hour || ''), realHour: String(f.realHour || ''), dropoff: String(f.dropoff || ''), dropNote: String(f.dropNote || ''), trip: '', total: totalFor(people), pay: 'Chưa thanh toán', payBy: '', pickedAt: '', pickedBy: '', releaseReason: '', releasedTrip: '', note: String(f.note || ''), lang: 'vi', time: now() };
       db.tickets.push(t);
       save();
       return { ok: true, ticket: cl(t) };
