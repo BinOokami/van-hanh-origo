@@ -338,7 +338,7 @@ const HOTLINE = '0325 392 290';
 // Danh sách điểm trả lấy từ máy chủ (tab "Điểm trả" trong Sheet, lệnh board trả về r.places). DROPS chỉ là danh sách mặc định khi máy chủ chưa gửi.
 // name = tên ngắn (vé cũ có thể chỉ lưu tên này); label = chữ ghi vào Sheet, hiện trên danh sách, thẻ sân bay và vé QR (đã kèm địa chỉ).
 const DROPS = [
-  { name: 'Văn phòng Origo', label: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang' },
+  { name: 'Văn phòng Origo', label: 'Văn phòng Origo, K98 Đ. Trần Nhật Duật Nối Dài, P. Nha Trang, Khánh Hòa' },
 ];
 const DROP_NEW = '__moi'; // lựa chọn "＋ Thêm điểm trả mới…" trong ô chọn
 // Điểm trả hiển thị = điểm trong danh sách + ghi chú riêng của vé (vd "Cổng A"), ghi chú nằm ở cột riêng nên không đổi điểm trong danh sách
@@ -1246,7 +1246,7 @@ function demoDb() {
       { code: md(t) + '-7302', status: 'Hoạt động', date: t, hour: '18:20', capacity: 29, driver: '', driverPhone: '', plate: '', note: '' },
     ],
     tickets: [
-      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', realHour: '14:50', dropoff: 'Văn phòng Origo, 85TT3-K98 Trần Nhật Duật, Nha Trang', dropNote: 'Cổng chính', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
+      mk({ code: 'OG-K7M2PX', status: ST.ASSIGNED, name: 'Nguyễn Văn An', phone: '0905 123 456', people: 3, flight: 'VJ123', hour: '14:35', realHour: '14:50', dropoff: 'Văn phòng Origo, K98 Đ. Trần Nhật Duật Nối Dài, P. Nha Trang, Khánh Hòa', dropNote: 'Cổng chính', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Vận hành 1, 15/11 09:10' }),
       mk({ code: 'OG-R4T9WE', status: ST.ASSIGNED, name: 'Trần Thị Bích', phone: '0912 000 111', people: 4, flight: 'VN1546', hour: '14:40', trip: md(t) + '-4821', origin: 'TP.HCM' }),
       mk({ code: 'OG-H2D5NQ', status: ST.PICKED, name: 'Lê Hoàng', phone: '0933 777 888', people: 2, flight: 'VJ123', hour: '14:35', trip: md(t) + '-4821', pay: PAYYES, payBy: 'Sân bay 1, 15/11 14:55', pickedAt: '15/11/2026 14:57:00', pickedBy: 'Nhân viên sân bay 1' }),
       mk({ code: 'OG-M8Y3CF', status: ST.ASSIGNED, name: 'Phạm Quốc Dũng', phone: '0977 321 654', people: 6, flight: 'QH202', hour: '18:05', trip: md(t) + '-7302', origin: 'Đà Nẵng' }),
