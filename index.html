@@ -1124,7 +1124,7 @@ function openQr(code) {
   d.style.width = '420px';
   d.innerHTML = '<div class="dh hero"><h2>Vé của khách</h2><button class="btn sm" data-close type="button">✕</button></div><div class="db">'
     + '<p class="meta" style="margin-top:0">Chụp màn hình thẻ vé bên dưới rồi gửi khách qua Zalo. Thẻ không có thông tin thanh toán.</p>'
-    + '<div class="ticket"><div class="th"><span class="logo"><img src="logo.png" alt="Origo" onerror="this.parentNode.textContent=\'Origo\'"></span><b>Vé xe sân bay Origo</b></div><div class="tb">'
+    + '<div class="ticket"><div class="th"><span class="logo"><img src="logo.png" alt="Origo" onerror="this.parentNode.textContent=\'Origo\'"></span><b>Đưa đón sân bay Origo</b></div><div class="tb">'
     + '<h3>' + esc(t.name) + '</h3><div class="route">Sân bay Cam Ranh → Nha Trang · ' + t.people + ' người</div>'
     + '<div class="qr">' + qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true }) + '</div><div class="code">' + esc(t.code) + '</div>'
     + '<dl class="info"><dt>Chuyến xe</dt><dd>' + (t.trip ? esc(t.trip) : '—') + '</dd><dt>Chuyến bay</dt><dd>' + esc(t.flight) + '</dd><dt>Hạ cánh</dt><dd>' + esc(effHour(t) || '—') + ' · ' + esc(t.date.split('-').reverse().join('/')) + '</dd><dt class="wide">Điểm trả</dt><dd class="wide">' + (t.dropoff ? esc(dropLabel(t.dropoff)) + (t.dropNote ? '<br><b>' + esc(t.dropNote) + '</b>' : '') : '—') + '</dd></dl>'
